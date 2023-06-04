@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from . models import *
-from django.contrib import messages
-
-
+from django.contrib import messages 
+from django.contrib.auth.models import User 
+from django.contrib.auth import authenticate , login as auth_login , logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+@login_required(login_url = '/login/')
 def recipe(request):
     if request.method == 'POST':
         data = request.POST
@@ -45,12 +47,13 @@ def recipe(request):
     context = {'data': querySet, 'veg':vegSet, 'nonVeg':nonVegSet, 'beverage':beverageSet}
     return render(request, 'recipe.html', context)
 
+@login_required(login_url='/login/')
 def deleteRecipe(request, id):
     data = Recipe.objects.get(id = id)
     data.delete()
     return redirect('/recipe/')
 
-
+@login_required(login_url = '/login/')
 def updateRecipe(request, id):
     querySet = Recipe.objects.get(id=id)
     
@@ -74,3 +77,60 @@ def updateRecipe(request, id):
         return redirect('/recipe/')
     
     return render (request, 'update.html', {'data':querySet})
+
+
+def index(request):
+    return render(request, 'index.html')
+
+def login(request):
+    if request.method == 'POST':
+        data = request.POST
+        username = data.get('username')
+        password = data.get('password')
+
+        user = User.objects.filter(username = username)
+        
+        if not user.exists():
+            messages.error(request , 'Invalid Username')
+            return redirect('/login/')
+        
+        user = authenticate(username = username , password = password)
+        
+        if user is None:
+            messages.error(request , 'Invalid Username/Password')
+            return redirect('/login/')
+        else:
+             auth_login(request, user)
+             return redirect('/recipe/')
+        
+    
+    return render(request,'login.html')
+def register(request):
+    if request.method == 'POST':
+        data = request.POST
+        
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password')
+        copassword = data.get('copassword')
+        
+        user = User.objects.filter(username = username)
+        
+        if user.exists():
+            messages.error(request , "this user already exists, try another !!")
+        elif len(password)<4:
+            messages.error(request , "your password too short !!")   
+        elif not password == copassword:
+            messages.error(request , "password didn't matched ") 
+        else:
+            user = User.objects.create(username = username , email = email)
+            user.set_password(password)
+            user.save()
+            messages.success(request , "successfully registered your account :)")
+            return redirect('/register/')
+      
+    return render(request,'register.html')
+
+def logout_page(request):
+    logout(request)
+    return redirect('/login/')

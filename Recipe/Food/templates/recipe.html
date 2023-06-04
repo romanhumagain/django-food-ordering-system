@@ -4,44 +4,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Menu Page</title>
+    <link rel="stylesheet" href="/static/styleRecipe.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-dark" >
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Menu Items</a>
+        <a class="navbar-brand" style="color:white;" href="#">Menu Items</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/recipe/">Home</a>
+              <a class="nav-link active" aria-current="page" style="color:white;" href="/recipe/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <a class="nav-link" style="color:white;"  href="#">Link</a>
             </li>
           </ul>
           <form class="d-flex" role="search" method="get">
-            <input class="form-control me-2" type="search" name="search" aria-label="Search">
+            <input class="form-control me-2" type="search"  placeholder="Search Items" name="search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
         </div>
+        <a href ="/logout/" class="btn btn-outline-success" type="submit" style="margin:8px; background-color: black; color: red;">Logout</a>
       </div>
     </nav>
   </head>
-<style>
-  h3 {
-    text-align: center;
-    font-family: 'Times New Roman', Times, serif;
-  }
-  .table{
-    margin-top: 30px;
-  }
-</style>
 <body>
 <div class="container mt-5">
-  <form class="col-6 mx-auto p-3 shadow-lg" method="post" enctype="multipart/form-data">
+  <form class="col-6 mx-auto p-3 shadow-lg" method="post" enctype="multipart/form-data" style="background-color: azure;">
     {% csrf_token %}
-    <h3>Add Recipe</h3>
+    <div class="txt"><strong>Add Recipe</strong> </div>
     <hr>
     {% if error %}
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -59,15 +52,15 @@
   {% endif %}
   
     <div class="mb-3">
-      <label for="recipe_name" class="form-label">Recipe Name</label>
+      <label for="recipe_name" class="form-label"><strong>Name</strong> </label>
       <input type="text" class="form-control" name="recipe_name" />
     </div>
     <div class="mb-3">
-      <label for="recipe_price" class="form-label">Recipe Price</label>
+      <label for="recipe_price" class="form-label"><strong>Recipe Price</strong></label>
       <input type="text" class="form-control" name="recipe_price" />
     </div>
     <div class="mb-3">
-      <label for="recipe_description" class="form-label">Description</label>
+      <label for="recipe_description" class="form-label"><strong>Description</strong></label>
       <textarea class="form-control" name="recipe_description" rows="3"></textarea>
     </div>
     <div class="form-check">
@@ -89,7 +82,7 @@
       </label>
     </div>
     <div class="mb-3">
-      <label for="recipe_image" class="form-label">Recipe Image</label>
+      <label for="recipe_image" class="form-label"><strong>Recipe Image</strong></label>
       <input class="form-control" type="file" name="recipe_image" />
     </div>
 
@@ -97,12 +90,12 @@
   </form>
 <hr>
 <div class="text">
-  <h3>Recipe Details</h3>
+  <div class="txt"><strong>Recipe Details</strong> </div>
 </div>
 <hr>
 
 {% if veg %}
-  <h2>Menu Items -> Veg</h2>
+<div class="category">Menu Items <strong>Veg</strong></div>
   <table class="table">
     <thead>
       <tr>
@@ -119,7 +112,7 @@
       {% for datas in veg %}
       <tr>
         <th scope="row">{{forloop.counter}}</th>
-        <td>{{datas.recipe_name}}</td>
+        <td><b>{{datas.recipe_name}}</b></td>
         <td>{{datas.recipe_price}}</td>
         <td>{{datas.recipe_description}}</td>
         <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
@@ -132,7 +125,7 @@
 {% endif %}
 
 {% if nonVeg %}
-  <h2>Menu Items -> Non Veg</h2>
+  <div class="category">Menu Items <strong>Non Veg</strong> </div>
   <table class="table">
     <thead>
       <tr>
@@ -149,7 +142,7 @@
       {% for datas in nonVeg %}
       <tr>
         <th scope="row">{{forloop.counter}}</th>
-        <td>{{datas.recipe_name}}</td>
+        <td><b>{{datas.recipe_name}}</b></td>
         <td>{{datas.recipe_price}}</td>
         <td>{{datas.recipe_description}}</td>
         <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
@@ -162,15 +155,15 @@
 {% endif %}
 
 {% if beverage %}
-  <h2>Menu Items -> Beverage</h2>
+  <div class="category">Menu Items <strong>Beverage</strong> </div>
   <table class="table">
     <thead>
       <tr>
         <th scope="col">S.N</th>
-        <th scope="col">Recipe Name</th>
-        <th scope="col">Recipe Price</th>
-        <th scope="col">Recipe Description</th>
-        <th scope="col">Recipe Image</th>
+        <th scope="col">Beverage Name</th>
+        <th scope="col">Beverage Price</th>
+        <th scope="col">Beverage Description</th>
+        <th scope="col">Images</th>
         <th scope="col">Actions</th>
   
       </tr>
@@ -179,7 +172,7 @@
       {% for datas in beverage %}
       <tr>
         <th scope="row">{{forloop.counter}}</th>
-        <td>{{datas.recipe_name}}</td>
+        <td><b>{{datas.recipe_name}}</b></td>
         <td>{{datas.recipe_price}}</td>
         <td>{{datas.recipe_description}}</td>
         <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
@@ -193,4 +186,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   </body>
+  <footer>
+    &copy; Designed and Built By Roman Humagain
+  </footer>
 </html>
