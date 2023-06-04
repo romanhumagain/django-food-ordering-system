@@ -1,0 +1,65 @@
+{% extends 'base.html' %} 
+{% block title %}Update Page{% endblock %} 
+
+{% block css %}
+<style>
+  h3 {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .table{
+    margin-top: 30px;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <form class="col-6 mx-auto p-3 shadow-lg" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>Update Recipe</h3>
+    <hr>
+
+    <div class="mb-3">
+      <label for="recipe_name" class="form-label">Recipe Name</label>
+      <input type="text" class="form-control" value="{{data.recipe_name}}" name="recipe_name" />
+    </div>
+    <div class="mb-3">
+      <label for="recipe_price" class="form-label">Recipe Price</label>
+      <input type="text" class="form-control" value="{{data.recipe_price}}" name="recipe_price" />
+    </div>
+    <div class="mb-3">
+      <label for="recipe_description" class="form-label">Description</label>
+      <textarea class="form-control" name="recipe_description" rows="3">{{data.recipe_description}}</textarea>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="category" id="category" value="veg"
+      {% if data.recipe_category == "veg" %} checked {% endif %} >
+      <label class="form-check-label" for="category">
+        Veg Items
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="category" id="category" value="nonveg" 
+      {% if data.recipe_category == "nonveg" %} checked {% endif %} >
+      <label class="form-check-label" for="category">
+        Non Veg Items
+      </label>
+    </div>
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="radio" name="category" id="category" value="beverage" 
+       {% if data.recipe_category == "beverage" %} checked {% endif %} >
+      <label class="form-check-label" for="category">
+        Beverage
+      </label>
+    </div>
+    <div class="mb-3">
+      <label for="recipe_image" class="form-label">Recipe Image</label>
+      <input class="form-control" type="file" name="recipe_image" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+<hr>
+</div>
+{% endblock %}

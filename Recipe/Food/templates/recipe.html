@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Menu Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Menu Items</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/recipe/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search" method="get">
+            <input class="form-control me-2" type="search" name="search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </head>
+<style>
+  h3 {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .table{
+    margin-top: 30px;
+  }
+</style>
+<body>
+<div class="container mt-5">
+  <form class="col-6 mx-auto p-3 shadow-lg" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>Add Recipe</h3>
+    <hr>
+    {% if error %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>ERROR !!</strong> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+
+    {% if messages %}
+    {% for message in messages %}
+      {% if message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible fade show" role="success">{{ message }} </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  
+    <div class="mb-3">
+      <label for="recipe_name" class="form-label">Recipe Name</label>
+      <input type="text" class="form-control" name="recipe_name" />
+    </div>
+    <div class="mb-3">
+      <label for="recipe_price" class="form-label">Recipe Price</label>
+      <input type="text" class="form-control" name="recipe_price" />
+    </div>
+    <div class="mb-3">
+      <label for="recipe_description" class="form-label">Description</label>
+      <textarea class="form-control" name="recipe_description" rows="3"></textarea>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="category" id="category" value="veg">
+      <label class="form-check-label" for="category">
+        Veg Items
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="category" id="category" value="nonveg">
+      <label class="form-check-label" for="category">
+        Non Veg Items
+      </label>
+    </div>
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="radio" name="category" id="category" value="beverage" >
+      <label class="form-check-label" for="category">
+        Beverage
+      </label>
+    </div>
+    <div class="mb-3">
+      <label for="recipe_image" class="form-label">Recipe Image</label>
+      <input class="form-control" type="file" name="recipe_image" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+<hr>
+<div class="text">
+  <h3>Recipe Details</h3>
+</div>
+<hr>
+
+{% if veg %}
+  <h2>Menu Items -> Veg</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">S.N</th>
+        <th scope="col">Recipe Name</th>
+        <th scope="col">Recipe Price</th>
+        <th scope="col">Recipe Description</th>
+        <th scope="col">Recipe Image</th>
+        <th scope="col">Actions</th>
+  
+      </tr>
+    </thead>
+    <tbody>
+      {% for datas in veg %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{datas.recipe_name}}</td>
+        <td>{{datas.recipe_price}}</td>
+        <td>{{datas.recipe_description}}</td>
+        <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
+        <td><a href="/delete/{{datas.id}}/" class="btn btn-danger" style="margin: 7px;">Delete</a>
+          <a href="/update/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px;">Update</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table> 
+{% endif %}
+
+{% if nonVeg %}
+  <h2>Menu Items -> Non Veg</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">S.N</th>
+        <th scope="col">Recipe Name</th>
+        <th scope="col">Recipe Price</th>
+        <th scope="col">Recipe Description</th>
+        <th scope="col">Recipe Image</th>
+        <th scope="col">Actions</th>
+  
+      </tr>
+    </thead>
+    <tbody>
+      {% for datas in nonVeg %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{datas.recipe_name}}</td>
+        <td>{{datas.recipe_price}}</td>
+        <td>{{datas.recipe_description}}</td>
+        <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
+        <td><a href="/delete/{{datas.id}}/" class="btn btn-danger" style="margin: 7px;">Delete</a>
+          <a href="/update/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px;">Update</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table> 
+{% endif %}
+
+{% if beverage %}
+  <h2>Menu Items -> Beverage</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">S.N</th>
+        <th scope="col">Recipe Name</th>
+        <th scope="col">Recipe Price</th>
+        <th scope="col">Recipe Description</th>
+        <th scope="col">Recipe Image</th>
+        <th scope="col">Actions</th>
+  
+      </tr>
+    </thead>
+    <tbody>
+      {% for datas in beverage %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{datas.recipe_name}}</td>
+        <td>{{datas.recipe_price}}</td>
+        <td>{{datas.recipe_description}}</td>
+        <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
+        <td><a href="/delete/{{datas.id}}/" class="btn btn-danger" style="margin: 7px;">Delete</a>
+          <a href="/update/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px;">Update</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table> 
+{% endif %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+</html>
