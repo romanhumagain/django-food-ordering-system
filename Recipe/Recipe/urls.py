@@ -20,16 +20,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from Food.views import *
+from Food import urls
+from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('' , home , name ='home'),
+    path('login/', login , name='login'),
+    path('register/', register , name='register'),
+    path('logout/', logout_page , name='logout'),
     path('recipe/',recipe , name="recipe" ),
     path('delete/<int:id>/', deleteRecipe, name='delete'),
     path('update/<int:id>/', updateRecipe , name='update'),
-    path('index/', index, name='index'),
-    path('login/', login , name='login'),
-    path('register/', register , name='register'),
-    path('logout/', logout_page , name='logout')
-]
+    path('table/' , UserTable , name='table'),
+    ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
+

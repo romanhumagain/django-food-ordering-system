@@ -133,4 +133,17 @@ def register(request):
 
 def logout_page(request):
     logout(request)
-    return redirect('/login/')
+    return redirect('/')
+
+def home(request):
+    return render(request , 'home.html')
+
+def UserTable(request):
+    data = User.objects.all()
+    
+    if request.GET.get('search'):
+        data = data.filter(username__icontains =request.GET.get('search'))
+    
+    context = {'querySet':data}
+    
+    return render(request, 'table.html' , context)

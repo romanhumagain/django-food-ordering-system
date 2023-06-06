@@ -8,6 +8,7 @@ class Recipe(models.Model):
   recipe_category = models.TextField(max_length=300, default='Uncategorized')
   recipe_price = models.IntegerField(default=0)
   recipe_image = models.ImageField(upload_to='images')
+  recipe_view_count = models.IntegerField(default=1)
   
   def __str__(self) -> str:
     return self.recipe_name

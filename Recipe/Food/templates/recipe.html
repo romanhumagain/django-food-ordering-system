@@ -18,7 +18,7 @@
               <a class="nav-link active" aria-current="page" style="color:white;" href="/recipe/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" style="color:white;"  href="#">Link</a>
+              <a class="nav-link" style="color:white;"  href="/table/">View User Details</a>
             </li>
           </ul>
           <form class="d-flex" role="search" method="get">
@@ -32,7 +32,7 @@
   </head>
 <body>
 <div class="container mt-5">
-  <form class="col-6 mx-auto p-3 shadow-lg" method="post" enctype="multipart/form-data" style="background-color: azure;">
+  <form class="col-6 mx-auto p-3 shadow-lg" method="post" enctype="multipart/form-data" style="background-color: rgb(13, 13, 13); color: #0EF6CC;">
     {% csrf_token %}
     <div class="txt"><strong>Add Recipe</strong> </div>
     <hr>
@@ -96,15 +96,15 @@
 
 {% if veg %}
 <div class="category">Menu Items <strong>Veg</strong></div>
-  <table class="table">
+<table class="table table-hover table-dark table-striped">
     <thead>
       <tr>
-        <th scope="col">S.N</th>
-        <th scope="col">Recipe Name</th>
-        <th scope="col">Recipe Price</th>
-        <th scope="col">Recipe Description</th>
-        <th scope="col">Recipe Image</th>
-        <th scope="col">Actions</th>
+        <th scope="col"><div class="head">S.N</div></th>
+        <th scope="col"><div class="head">Recipe Name</div></th>
+        <th scope="col"><div class="head">Recipe Price</div></th>
+        <th scope="col"><div class="head">Recipe Description</div></th>
+        <th scope="col"><div class="head">Recipe Image</div></th>
+        <th scope="col"><div class="head">Actions</div></th>
   
       </tr>
     </thead>
@@ -117,7 +117,7 @@
         <td>{{datas.recipe_description}}</td>
         <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
         <td><a href="/delete/{{datas.id}}/" class="btn btn-danger" style="margin: 7px;">Delete</a>
-          <a href="/update/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px;">Update</a></td>
+          <a href="/update/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px; background-color: #0EF6CC;">Update</a></td>
       </tr>
       {% endfor %}
     </tbody>
@@ -126,15 +126,16 @@
 
 {% if nonVeg %}
   <div class="category">Menu Items <strong>Non Veg</strong> </div>
-  <table class="table">
+  <table class="table table-hover table-dark table-striped">
     <thead>
       <tr>
-        <th scope="col">S.N</th>
-        <th scope="col">Recipe Name</th>
-        <th scope="col">Recipe Price</th>
-        <th scope="col">Recipe Description</th>
-        <th scope="col">Recipe Image</th>
-        <th scope="col">Actions</th>
+        <th scope="col"><div class="head">S.N</div></th>
+        <th scope="col"><div class="head">Recipe Name</div></th>
+        <th scope="col"><div class="head">Recipe Price</div></th>
+        <th scope="col"><div class="head">Recipe Description</div></th>
+        <th scope="col"><div class="head">Recipe Image</div></th>
+        <th scope="col"><div class="head">Actions</div></th>
+  
   
       </tr>
     </thead>
@@ -147,7 +148,7 @@
         <td>{{datas.recipe_description}}</td>
         <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
         <td><a href="/delete/{{datas.id}}/" class="btn btn-danger" style="margin: 7px;">Delete</a>
-          <a href="/update/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px;">Update</a></td>
+          <a href="/update/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px; background-color: #0EF6CC;">Update</a></td>
       </tr>
       {% endfor %}
     </tbody>
@@ -156,15 +157,16 @@
 
 {% if beverage %}
   <div class="category">Menu Items <strong>Beverage</strong> </div>
-  <table class="table">
+  <table class="table table-hover table-dark table-striped">
     <thead>
       <tr>
-        <th scope="col">S.N</th>
-        <th scope="col">Beverage Name</th>
-        <th scope="col">Beverage Price</th>
-        <th scope="col">Beverage Description</th>
-        <th scope="col">Images</th>
-        <th scope="col">Actions</th>
+        <th scope="col"><div class="head">S.N</div></th>
+        <th scope="col"><div class="head">Recipe Name</div></th>
+        <th scope="col"><div class="head">Recipe Price</div></th>
+        <th scope="col"><div class="head">Recipe Description</div></th>
+        <th scope="col"><div class="head">Recipe Image</div></th>
+        <th scope="col"><div class="head">Actions</div></th>
+  
   
       </tr>
     </thead>
@@ -177,7 +179,8 @@
         <td>{{datas.recipe_description}}</td>
         <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
         <td><a href="/delete/{{datas.id}}/" class="btn btn-danger" style="margin: 7px;">Delete</a>
-          <a href="/update/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px;">Update</a></td>
+          <a href="/update/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px; background-color: #0EF6CC;">Update</a>
+
       </tr>
       {% endfor %}
     </tbody>
