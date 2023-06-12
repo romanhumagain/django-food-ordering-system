@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Order</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/dashboard/{{id}}/">Menu Items</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/dashboard/{{id}}/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">View Order Details</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search" method="GET">
+          <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  {% if messages %}
+  {% for message in messages %} 
+  {% if message.tags == 'success' %} 
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulation !!</strong> {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  <div class="form">
+    <form class="col-4 mx-auto p-4 shadow-lg" method="post" style="background-color: hsl(0, 0%, 0%); margin-top: 20px;">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="item" class="form-label" style="color: #0EF6CC;">Order Item</label>
+        <input
+          type="text"
+          class="form-control"
+          name="item"
+          id="item"
+          value="{{data.recipe_name}}"
+          style="width: 350px; font-family: 'Times New Roman', Times, serif"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label" style="color: #0EF6CC;">Item Price</label>
+        <input
+          type="text"
+          class="form-control"
+          name="price"
+          id="price"
+          value="{{data.recipe_price}}"
+          readonly
+          style="width: 350px; font-family: 'Times New Roman', Times, serif"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="quantity" class="form-label" style="color: #0EF6CC;">Quantity</label>
+        <input
+          type="number" class="form-control" name="quantity" id="quantity" value="1"
+          style="width: 350px; font-family: 'Times New Roman', Times, serif"
+        />
+        </div>
+        <div class="mb-3">
+        <label for="totalprice" class="form-label" style="color: #0EF6CC;">Total Price</label>
+        <input
+          type="number" class="form-control" name="totalprice" id="totalprice" value="{{totalPrice}}" readonly "
+          style="width: 350px; font-family: 'Times New Roman', Times, serif"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label" style="color: #0EF6CC;">Order Date</label>
+        <input
+          type="datetime"
+          class="form-control"
+          name="date"
+          id="date"
+          value="{{date}}"
+          style="width: 350px; font-family: 'Times New Roman', Times, serif"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Order</button> 
+      </form>
+  </div>
+  <hr>
+  <div class="head">Your Order History</div>
+
+<div class="container">
+  <table class="table table-hover table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col"><div class="head">S.N</div></th>
+        <th scope="col"><div class="head">Item Name</div></th>
+        <th scope="col"><div class="head">Quantity</div></th>
+        <th scope="col"><div class="head">Total Price </div></th>
+        <th scope="col"><div class="head">Order Date</div></th>
+        <th scope="col"><div class="head">Status</div></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orderData %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td><b>{{order.order_item}}</b></td>
+        <td>{{order.order_quantity}}</td>
+        <td>{{order.total_price}}</td>
+        <td>{{order_date}}</td>
+        <td>{{order.order_status}}</td>
+        
+        </tr>
+        {% endfor %}
+</tbody>
+</table>
+
+</div>
+
+
+
+  <script>
+    // Calculate and set the total price when the quantity changes
+    document.getElementById('quantity').addEventListener('change', function() {
+      var itemPrice = parseFloat(document.getElementById('price').value);
+      var quantity = parseInt(this.value);
+      var totalPrice = itemPrice * quantity;
+  
+      document.getElementById('totalprice').value = totalPrice;
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

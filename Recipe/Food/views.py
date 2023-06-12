@@ -5,10 +5,12 @@ from django.contrib import messages
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate , login as auth_login , logout
 from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 @login_required(login_url = '/login/')
 def recipe(request):
     if request.method == 'POST':
+        
         data = request.POST
         recipe_name = data.get('recipe_name')
         recipe_price = data.get('recipe_price')
@@ -16,8 +18,6 @@ def recipe(request):
         recipe_image = request.FILES.get('recipe_image')
         recipe_category = data.get('category')
         
-        print(recipe_category)
-
         if recipe_name == "" and recipe_description == "" and recipe_price == "":
             return render(request, 'recipe.html', {'error': True , 'message': 'Please provide all the details in the field!'})
         elif not recipe_image:
@@ -78,7 +78,6 @@ def updateRecipe(request, id):
     
     return render (request, 'update.html', {'data':querySet})
 
-
 def index(request):
     return render(request, 'index.html')
 
@@ -100,8 +99,14 @@ def login(request):
             messages.error(request , 'Invalid Username/Password')
             return redirect('/login/')
         else:
-             auth_login(request, user)
-             return redirect('/recipe/')
+            user = User.objects.filter(username=username).first()
+            if user is not None:
+                id = user.id
+                auth_login(request, user)
+                return redirect('/dashboard/{}/'.format(id))
+            else:
+                messages.error(request, 'Invalid Username')
+                return redirect('/login/')
         
     
     return render(request,'login.html')

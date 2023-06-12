@@ -10,6 +10,14 @@
       justify-content: center;
       /* height: 100vh; */
     }
+    footer{
+  font-size: 18px;
+  font-style: italic;
+  color: #666;
+  text-align: center;
+  padding-bottom: 30px;
+  margin-top: 200px;
+}
   </style>
     {% endblock %}
 
@@ -26,14 +34,14 @@
     {% endfor %}
     {% endif %}
     <div class="form">
-  <form class="col-4 p-4 mx-auto shadow-lg" method="post">
+  <form class="col-4 p-4 mx-auto shadow-lg" method="post" style="background-color: rgb(13, 13, 13); color: #0EF6CC; margin: 100px;">
     {% csrf_token %}
       <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
+        <label for="username" class="form-label" style="color: #0EF6CC;">Username</label>
         <input type="text" class="form-control" name="username" id="username" style="width:350px; font-family: 'Times New Roman', Times, serif;">
       </div>
       <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
+        <label for="password" class="form-label" style="color: #0EF6CC;">Password</label>
         <input type="password" class="form-control" name="password" id="password" style="width:350px; font-family: 'Times New Roman', Times, serif;">
       </div>
       <button type="submit" class="btn btn-primary">Login</button> <br>

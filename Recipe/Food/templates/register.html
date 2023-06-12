@@ -8,6 +8,14 @@
     justify-content: center;
     /* height: 100vh; */
   }
+  footer{
+  font-size: 18px;
+  font-style: italic;
+  color: #666;
+  text-align: center;
+  padding-bottom: 30px;
+  margin-top: 20px;
+}
 </style>
 {% endblock %}
 {% block body %} 
@@ -31,10 +39,10 @@
 {% endif %}
 
 <div class="form">
-  <form class="col-4 mx-auto p-4 shadow-lg" method="post">
+  <form class="col-4 mx-auto p-4 shadow-lg" method="post" style="background-color: hsl(0, 0%, 0%); margin-top: 20px;">
     {% csrf_token %}
     <div class="mb-3">
-      <label for="username" class="form-label">Username</label>
+      <label for="username" class="form-label" style="color: #0EF6CC;">Username</label>
       <input
         type="text"
         class="form-control"
@@ -44,7 +52,7 @@
       />
     </div>
     <div class="mb-3">
-      <label for="email" class="form-label">Email address</label>
+      <label for="email" class="form-label" style="color: #0EF6CC;">Email address</label>
       <input
         type="email"
         class="form-control"
@@ -53,19 +61,19 @@
         aria-describedby="emailHelp"
         style="width: 350px; font-family: 'Times New Roman', Times, serif"
       />
-      <div id="emailHelp" class="form-text">
+      <div id="emailHelp" class="form-text" style="color: #0EF6CC;">
         We'll never share your email with anyone else.
       </div>
     </div>
     <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
+      <label for="password" class="form-label" style="color: #0EF6CC;">Password</label>
       <input
         type="password" class="form-control" name="password" id="password"
         style="width: 350px; font-family: 'Times New Roman', Times, serif"
       />
     </div>
     <div class="mb-3">
-      <label for="copassword" class="form-label">Confirm Password</label>
+      <label for="copassword" class="form-label" style="color: #0EF6CC;">Confirm Password</label>
       <input
         type="password"
         class="form-control"
@@ -74,8 +82,8 @@
         style="width: 350px; font-family: 'Times New Roman', Times, serif"
       />
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button> <br />
-    ALready have account ? <a href="/login/">login</a>
+    <button type="submit" class="btn btn-primary">Submit</button> 
+    <br/> <div class="textt" style="color: #0EF6CC;"> ALready have account ? <a href="/login/">login</a></div>
   </form>
 </div>
 {% endblock %}

@@ -20,7 +20,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from Food.views import *
+from Customer.views import *
 from Food import urls
+from Customer import urls
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -33,6 +35,9 @@ urlpatterns = [
     path('delete/<int:id>/', deleteRecipe, name='delete'),
     path('update/<int:id>/', updateRecipe , name='update'),
     path('table/' , UserTable , name='table'),
+    path('dashboard/<int:id>/', customer_dashboard , name='dashboard'),
+    path('orderhistory/<int:cid>/' ,OrderHistory , name = 'orderhistory'),
+    path('order/<int:cid>/<int:id>/' , customer_order , name='order'),
     ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
