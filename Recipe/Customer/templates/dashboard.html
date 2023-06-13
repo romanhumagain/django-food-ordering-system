@@ -50,7 +50,7 @@ footer{
       </ul>
       <form class="d-flex" role="search" method="GET">
         <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-outline-primary" type="submit">Search</button>
       </form>
     </div>
   </div>
@@ -59,6 +59,18 @@ footer{
   <strong>Welcome !!</strong> {{username}}
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
+{% if messages %}
+  {% for message in messages %} 
+  {% if message.tags == 'success' %} 
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulation !!</strong> {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endif %}
+{% endfor %}
+  {% endif %}
+
+
    <div class="container">
     <hr>
     <div class="text">
@@ -66,6 +78,10 @@ footer{
     </div>
     <hr>
     
+{% if error_message %}
+<div class="alert alert-danger "><strong>Sorry !</strong> {{error_message}}</div>
+{% endif %}
+
     {% if vegData %}
     <div class="category">Menu Items <strong>Veg</strong></div>
     <table class="table table-hover table-dark table-striped">
@@ -88,7 +104,7 @@ footer{
             <td>{{datas.recipe_price}}</td>
             <td>{{datas.recipe_description}}</td>
             <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
-            <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px; background-color: #0EF6CC;">Order</a></td>
+            <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Order</a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -118,7 +134,7 @@ footer{
             <td>{{datas.recipe_description}}</td>
             <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
             <td>
-              <a href="/order/{{id}}/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px; background-color: #0EF6CC;">Order</a></td>
+              <a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px; ">Order</a></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -149,7 +165,7 @@ footer{
             <td>{{datas.recipe_description}}</td>
             <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
             <td>
-              <a href="/order/{{id}}/{{datas.id}}/" class="btn btn-success" style="margin-left: 3px; background-color: #0EF6CC;">Order</a>
+              <a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Order</a>
           </tr>
           {% endfor %}
         </tbody>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Update Order</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"style="color:white;">Recipes</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#" style="color:white ">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color:white;">Link</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+<div class="form">
+  <form class="col-4 mx-auto p-4 shadow-lg" method="post" style="background-color: hsl(0, 0%, 0%); margin-top: 20px;">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="item" class="form-label" style="color: #0EF6CC;">Order Item</label>
+      <input
+        type="text"
+        class="form-control"
+        name="item"
+        id="item"
+        value="{{order.order_item}}"
+        style="width: 350px; font-family: 'Times New Roman', Times, serif"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="price" class="form-label" style="color: #0EF6CC;">Item Price</label>
+      <input
+        type="text"
+        class="form-control"
+        name="price"
+        id="price"
+        value="{{price}}"
+        readonly
+        style="width: 350px; font-family: 'Times New Roman', Times, serif"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="quantity" class="form-label" style="color: #0EF6CC;">Quantity</label>
+      <input
+        type="number" class="form-control" name="quantity" id="quantity" value="{{order.order_quantity}}"
+        style="width: 350px; font-family: 'Times New Roman', Times, serif"
+      />
+      </div>
+      <div class="mb-3">
+      <label for="totalprice" class="form-label" style="color: #0EF6CC;">Total Price</label>
+      <input
+        type="number" class="form-control" name="totalprice" id="totalprice" value="{{order.total_price}}" readonly "
+        style="width: 350px; font-family: 'Times New Roman', Times, serif"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="date" class="form-label" style="color: #0EF6CC;">Order Date</label>
+      <input
+        type="datetime"
+        class="form-control"
+        name="date"
+        id="date"
+        value="{{order.order_date}}"
+        style="width: 350px; font-family: 'Times New Roman', Times, serif"
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button> 
+    </form>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+  <footer>
+    &copy;2023 Designed and Built By Roman Humagain
+  </footer>
+  <script>
+    // Calculate and set the total price when the quantity changes
+    document.getElementById('quantity').addEventListener('change', function() {
+      var itemPrice = parseFloat(document.getElementById('price').value);
+      var quantity = parseInt(this.value);
+      var totalPrice = itemPrice * quantity;
+  
+      document.getElementById('totalprice').value = totalPrice;
+    });
+  </script>
+</html>

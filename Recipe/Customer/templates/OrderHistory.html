@@ -24,11 +24,12 @@
   font-style: italic;
   color: #666;
   text-align: center;
-  margin-top: 140px;
-  /* padding-bottom: 30px; */
+  /* margin-top: 140px; */
+  padding: 30px;
 }
 </style>
 <body>
+ 
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="/dashboard/{{customerId}}/">Dashboard</a>
@@ -51,7 +52,16 @@
       </div>
     </div>
   </nav>
-
+  {% if messages %}
+  {% for message in messages %}
+  {% if message.tags == 'success'%}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
   <div class="alert alert-primary alert-dismissible fade show" role="alert">
     <strong>Thank You !!</strong> For choosing us
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -70,6 +80,7 @@
         <th scope="col"><div class="head">Total Price </div></th>
         <th scope="col"><div class="head">Order Date</div></th>
         <th scope="col"><div class="head">Status</div></th>
+        <th scope="col"><div class="head">Action</div></th>
       </tr>
     </thead>
     <tbody>
@@ -81,6 +92,9 @@
         <td>{{order.total_price}}</td>
         <td>{{order.order_date}}</td>
         <td>{{order.order_status}}</td>
+        <td><a href="/deleteOrder/{{order.id}}/" class="btn btn-outline-danger" style="margin: 7px;">Delete</a>
+          <a href="/updateOrder/{{customerId}}/{{order.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Update</a></td>
+      
         
         </tr>
         {% endfor %}
@@ -91,8 +105,7 @@
 {% if error_message %}
 
 <div class="alert alert-danger" role="alert">
-  <strong>Sorry! </strong> {{ error_message }}
-</div>
+  <strong>Sorry! </strong> {{ error_message }}</div>
   
 {% endif %}
 

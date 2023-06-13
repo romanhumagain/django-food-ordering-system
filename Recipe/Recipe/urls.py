@@ -38,6 +38,8 @@ urlpatterns = [
     path('dashboard/<int:id>/', customer_dashboard , name='dashboard'),
     path('orderhistory/<int:cid>/' ,OrderHistory , name = 'orderhistory'),
     path('order/<int:cid>/<int:id>/' , customer_order , name='order'),
+    path('deleteOrder/<int:id>/', deleteOrder, name='deleteOrder'),
+    path('updateOrder/<int:cid>/<int:id>/' , updateOrder , name='updateOrder'),
     ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
