@@ -27,19 +27,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('' , home , name ='home'),
-    path('login/', login , name='login'),
-    path('register/', register , name='register'),
-    path('logout/', logout_page , name='logout'),
-    path('recipe/',recipe , name="recipe" ),
-    path('delete/<int:id>/', deleteRecipe, name='delete'),
-    path('update/<int:id>/', updateRecipe , name='update'),
-    path('table/' , UserTable , name='table'),
-    path('dashboard/<int:id>/', customer_dashboard , name='dashboard'),
-    path('orderhistory/<int:cid>/' ,OrderHistory , name = 'orderhistory'),
-    path('order/<int:cid>/<int:id>/' , customer_order , name='order'),
-    path('deleteOrder/<int:id>/', deleteOrder, name='deleteOrder'),
-    path('updateOrder/<int:cid>/<int:id>/' , updateOrder , name='updateOrder'),
+    path('', include('Customer.urls')),
+    path('recipe/',include('Food.urls')),
     ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

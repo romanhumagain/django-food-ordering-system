@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email Form</title>
+  <!-- Add Bootstrap CDN links -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <style>
+    .container {
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Compose Email</h2>
+  <form  method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="inputTo">To:</label>
+      <input type="email" class="form-control" id="inputTo" name="to" required>
+    </div>
+    <div class="form-group">
+      <label for="inputSubject">Subject:</label>
+      <input type="text" class="form-control" id="inputSubject" name="subject" required>
+    </div>
+    <div class="form-group">
+      <label for="inputMessage">Message:</label>
+      <textarea class="form-control" id="inputMessage" name="message" rows="10" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="inputAttachments">Attachments:</label>
+      <input type="file" class="form-control-file" id="inputAttachments" name="attachment" multiple>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Send</button>
+      <button type="button" class="btn btn-secondary">Discard</button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

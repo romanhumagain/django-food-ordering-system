@@ -1,0 +1,235 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  </head>
+  <style>
+    footer{
+  font-size: 18px;
+  font-style: italic;
+  color: #666;
+  text-align: center;
+  margin-top: 68px;
+}
+  </style>
+  <nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#" style="color: white;">Recipes</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#" style="color: white;">Home</a>
+          </li>
+        </ul>
+      </div>
+      <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#login" type="submit" style="margin-right:30px; width: 100px; background-color: black; color: red;">Login</button>
+     
+    </div>
+  </nav>
+  
+<!-- Login Modal -->
+
+<div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="loginLabel">Login Your Account</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        
+        <div class="form">
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="login">
+            <div class="mb-3">
+              <label for="username" class="form-label" 
+                >Username</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="userName"
+                id="userName"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label" 
+                >Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                name="passWord"
+                id="passWord"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif"
+              />
+            </div>
+            <div class="check">
+              <input type="checkbox" id="pass" name="pass" />
+              <label for="pass"> Show Password</label><br />
+            </div>
+        <button type="submit" class="btn btn-primary" style="margin: 10px">
+          Login
+        </button>
+        <br>
+            Don't have account ? <a href="" data-bs-toggle="modal" data-bs-target="#signup">register</a>
+      </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Signup Modal -->
+<div class="modal fade" id="signup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="signupLabel">Register Your Account</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form">
+          <form  method="post" style="margin-top: 20px;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="signup">
+            <div class="mb-3">
+              <label for="username" class="form-label" >Username</label>
+              <input
+                type="text"
+                class="form-control"
+                name="username"
+                id="username"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label" >Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                id="email"
+                aria-describedby="emailHelp"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif"
+              />
+              <div id="emailHelp" class="form-text" >
+                We'll never share your email with anyone else.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label" >Password</label>
+              <input
+                type="password" class="form-control" name="password" id="password"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="copassword" class="form-label">Confirm Password</label>
+              <input
+                type="password"
+                class="form-control"
+                name="copassword"
+                id="copassword"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button> 
+            <br/> <div class="textt"> ALready have account ? <a href=""  data-bs-toggle="modal" data-bs-target="#login">login</a></div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <body>
+    {% if messages %} 
+    {% for message in messages %}
+   {% if message.tags == 'error' %}
+   <div class="alert alert-danger alert-dismissible fade show" role="alert">
+     <strong>ERROR !</strong> {{message}}
+     <button
+       type="button"
+       class="btn-close"
+       data-bs-dismiss="alert"
+       aria-label="Close"
+     ></button>
+   </div>
+   {% endif %}
+   {% if message.tags == 'success' %}
+   <div class="alert alert-success alert-dismissible fade show" role="alert">
+     <strong>Congratulation !</strong> {{message}}
+     <button
+       type="button"
+       class="btn-close"
+       data-bs-dismiss="alert"
+       aria-label="Close"
+     ></button>
+   </div>
+   {% endif %}
+    {% endfor %} 
+    {% endif %}
+    <div id="carouselExampleCaptions" class="carousel slide">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="/static/slide2.jpg" class="d-block w-100" alt="image" style="height: 480px; width: 900px;">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Explore a World of Culinary Delights</h5>
+            <p>Indulge in a diverse selection of mouthwatering dishes, all at your fingertips. </p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="/static/slide.jpg" class="d-block w-100" alt="image" style="height: 480px; width: 900px;">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="/static/home.jpg" class="d-block w-100" alt="image" style="height: 480px; width: 900px;">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Convenient and Delicious Food Ordering</h5>
+            <p>Discover a new way to satisfy your cravings with our innovative food ordering system. </p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+  <footer>
+    &copy; Designed and Built By Roman Humagain
+  </footer>
+</html>

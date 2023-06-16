@@ -3,10 +3,56 @@ from django.shortcuts import render , redirect
 from Food.models import *
 from Customer.models import*
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from django.contrib import messages
 from datetime import date
 
+from django.contrib.auth import authenticate , login as auth_login , logout
+from django.contrib.auth.decorators import login_required
+
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
+
 # Create your views here.
+def home(request):
+    if request.method == 'POST':
+        data = request.POST
+        action = data.get('action')
+
+        if action == 'login':
+            username = data.get('userName')
+            password = data.get('passWord')
+
+            user = authenticate(username=username, password=password)
+
+            if user is None:
+                messages.error(request, 'Invalid Username/Password')
+            else:
+                auth_login(request, user)
+                return redirect('/dashboard/{}/'.format(user.id))
+
+        elif action == 'signup':
+            username = data.get('username')
+            email = data.get('email')
+            password = data.get('password')
+            copassword = data.get('copassword')
+
+            user = User.objects.filter(username=username)
+
+            if user.exists():
+                messages.error(request, "This user already exists, try another!")
+            elif len(password) < 4:
+                messages.error(request, "Your password is too short!")
+            elif not password == copassword:
+                messages.error(request, "Passwords do not match!")
+            else:
+                user = User.objects.create(username=username, email=email)
+                user.set_password(password)
+                user.save()
+                messages.success(request, "Successfully registered your account!")
+                # return redirect('/register/')
+
+    return render(request, 'home.html')
 
 def customer_dashboard(request, id):
     userData = User.objects.filter(id=id)
@@ -71,7 +117,6 @@ def customer_order(request, cid, id):
         'orderData':orderData,
         'cid':cid,
         'id':id
-        
     }
     if not orderData:
         context['error_message'] = 'No ordered items found '
@@ -117,7 +162,7 @@ def updateOrder(request, cid ,id):
             totalPrice = data.get('totalprice')
                 
             orderDetails.order_item = itemName
-            orderDetails.total_price = itemPrice
+            orderDetails.total_price = totalPrice
             orderDetails.order_quantity = quantity
             orderDetails.order_date = today
                 
@@ -132,3 +177,34 @@ def updateOrder(request, cid ,id):
 
     context = {'order': orderDetails, 'price': itemPrice, 'date': today}
     return render(request, 'UpdateOrder.html', context)
+
+def sendMail(request):
+    if request.method == 'POST':
+        data = request.POST
+        
+        subject = data.get('subject')
+        message = data.get('message')
+        to = data.get('to')
+        
+        attachment = request.FILES.get('attachment')
+        
+    
+        email = EmailMessage(
+            subject=subject,
+            body=message,
+            from_email='romanhmgn6999@gmail.com',
+            to=[to],
+        )
+        
+        if attachment:
+            attachment_name = attachment.name
+            attachment_content_type = attachment.content_type
+            attachment_content = attachment.read()
+            email.attach(attachment_name, attachment_content, attachment_content_type)
+        email.send()
+        
+    return render(request , 'mail.html')
+
+def logout_account(request):
+    logout(request)
+    return redirect('/')
