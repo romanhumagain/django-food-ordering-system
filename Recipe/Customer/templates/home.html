@@ -75,7 +75,7 @@
               />
             </div>
             <div class="check">
-              <input type="checkbox" id="pass" name="pass" />
+              <input type="checkbox" id="check" name="check" />
               <label for="pass"> Show Password</label><br />
             </div>
         <button type="submit" class="btn btn-primary" style="margin: 10px">
@@ -225,7 +225,14 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
+ <script>
+ check.onclick = passwordVisibility
+  function passwordVisibility(){
+  if (check.checked) passWord.type = "text";
+  else PassWord.type = "password"
+  }
 
+  </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   </body>

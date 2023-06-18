@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render , redirect
 from Food.models import *
 from Customer.models import*
@@ -12,7 +12,9 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
+from Customer.utils import *
 
+import uuid
 # Create your views here.
 def home(request):
     if request.method == 'POST':
@@ -49,6 +51,10 @@ def home(request):
                 user = User.objects.create(username=username, email=email)
                 user.set_password(password)
                 user.save()
+                
+                profile = Profile.objects.create(user= user , token = str(uuid.uuid4()))
+                profile.save()
+                
                 messages.success(request, "Successfully registered your account!")
                 # return redirect('/register/')
 
@@ -56,12 +62,36 @@ def home(request):
 
 def customer_dashboard(request, id):
     userData = User.objects.filter(id=id)
+    profile = Profile.objects.filter(user=userData.first())
+    
+    if request.method == 'POST':
+        data = request.POST
+        action = data.get('action')
+        
+        if action == 'verify':
+            email = userData.first().email
+            token = profile.first().token
+            
+            send_verification(email , token)
+            
+            messages.success(request , 'Successfully Sent Your Verification Code')
+      
     name = ""
+    token = ""
+    email = ""
+    verification_status = False
     if userData.exists():
         name = userData.first().username
+        email = userData.first().email
+        
+    if profile.exists():
+        token = profile.first().token
+        verification_status = profile.first().is_verified
+        
 
     querySet = Recipe.objects.all()
     context = {'datas': querySet, 'id': id}  # Include 'id' in the context
+    
     veg = Recipe.objects.filter(recipe_category='veg')
     nonveg = Recipe.objects.filter(recipe_category='nonveg')
     beverage = Recipe.objects.filter(recipe_category='beverage')
@@ -77,6 +107,9 @@ def customer_dashboard(request, id):
     if not veg and not nonveg and not beverage:
         context['error_message'] ='No items found'
         
+    if not verification_status:
+        context['verification_error'] = 'please verify your account'
+        
     return render(request, 'dashboard.html', context)
 
 def customer_order(request, cid, id):
@@ -84,7 +117,7 @@ def customer_order(request, cid, id):
     user = User.objects.get(id=cid)
 
     today = date.today()
-    orderData = Order.objects.filter(user= user)
+    orderData = Order.objects.filter(user=user)
     
     if request.method == 'POST':
         data = request.POST
@@ -93,33 +126,37 @@ def customer_order(request, cid, id):
         quantity = data.get('quantity')
         order_date = today
         total_price = data.get('totalprice')
+        address = data.get('address')
         
         if total_price == "":
-            messages.error(request , 'please provide the quantity of price that you want to order')
-        else:    
+            messages.error(request, 'Please provide the quantity of price that you want to order')
+        else:
+            # Process the address data here
+            # Save the address to the database or perform any required operations
             order = Order.objects.create(
                 order_item=name,
                 total_price=total_price,
                 order_quantity=quantity,
                 order_date=order_date,
-                user=user  # Assign the Customer instance
+                address=address,
+                user=user
             )
-            messages.success(request, "Successfully ordered your item ")
+            messages.success(request, "Successfully ordered your item")
             return redirect(f'/dashboard/{cid}')
     
     search = request.GET.get('search')
     if search:
-        orderData = orderData.filter(order_item__icontains = search)
+        orderData = orderData.filter(order_item__icontains=search)
     
     context = {
         'data': querySet,
         'date': today,
-        'orderData':orderData,
-        'cid':cid,
-        'id':id
+        'orderData': orderData,
+        'cid': cid,
+        'id': id
     }
     if not orderData:
-        context['error_message'] = 'No ordered items found '
+        context['error_message'] = 'No ordered items found'
 
     return render(request, 'order.html', context)
 
@@ -208,3 +245,12 @@ def sendMail(request):
 def logout_account(request):
     logout(request)
     return redirect('/')
+
+def verify(request , token):
+    try:
+        profile = Profile.objects.get(token = token)
+        profile.is_verified = True
+        profile.save()
+        return HttpResponse('Congratulation! Successfully Verified Your Account !')
+    except Exception as e:
+        return HttpResponse("Sorry! Couldn't Verify Your Account !")

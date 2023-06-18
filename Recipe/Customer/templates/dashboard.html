@@ -44,10 +44,45 @@ footer{
   font-size: 20px;
   font-family:'Times New Roman', Times, serif;
 }
+.btn_verify{
+  margin-left: 1300px;
+  align-items: center;
+  /* margin-top: 50px; */
+}
+.verification-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10px;
+  padding-right: 15px;
+}
+.verification-text {
+  margin-top: 5px;
+  font-size: 15px;
+}
+
 </style>
   <body>
+    {% if verification_error %}
+<script>
+  function showAlert(){
+alert("please verify your account to order items")
+  }
+  </script>
+{% endif %}
+
+
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
+
+        {% if not verification_error %}
+        <div class="verification-badge">
+          <img src="/static/badge.png" alt="Verification Badge" style="width: 35px; height: 35px;">
+          <div class="verification-text">Verified</div>
+        </div>
+        {% endif %}
+      
         <a class="navbar-brand" href="/dashboard/{{id}}/">Menu Items</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -65,7 +100,6 @@ footer{
             <p style="margin-right: 140px; margin-top: 17px;">
               <i class="fa fa-envelope"></i>
               <a href="mailto:romanhmgn6999@gmail.com">romanhmgn6999@gmail.com</a>
-
             </p>
           </div>
           
@@ -79,19 +113,30 @@ footer{
       </div>
     </nav>
     
+    {% if verification_error %}
+    <div class="alert alert-danger d-flex justify-content-between align-items-center">
+        <div>{{ verification_error }}</div>
+        <form method="post">
+          {% csrf_token %}
+        <button type="submit" name="action" value="verify" class="btn btn-primary">Verify</button>
+        </form>
+    </div>
+{% endif %}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
   <strong>Welcome !!</strong> {{username}}
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-{% if messages %}
+  {% if verification_error %}
+  {% if messages %}
   {% for message in messages %} 
   {% if message.tags == 'success' %} 
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>Congratulation !!</strong> {{ message }}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+  </div>
   {% endif %}
-{% endfor %}
+  {% endfor %}
+  {% endif %}
   {% endif %}
 
 
@@ -128,7 +173,14 @@ footer{
             <td>{{datas.recipe_price}}</td>
             <td>{{datas.recipe_description}}</td>
             <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
+            {% if not verification_error %}
             <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Order</a></td>
+          {% endif %}
+
+          {% if verification_error %}
+          <td><button type="submit" class="btn btn-outline-primary" onclick="showAlert()" style="margin-left: 3px;">Order</button></td>
+          {% endif %}
+
           </tr>
           {% endfor %}
         </tbody>
@@ -157,9 +209,14 @@ footer{
             <td>{{datas.recipe_price}}</td>
             <td>{{datas.recipe_description}}</td>
             <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
-            <td>
-              <a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px; ">Order</a></td>
-          </tr>
+              {% if not verification_error %}
+            <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Order</a></td>
+            {% endif %}
+
+            {% if verification_error %}
+            <td><button type="submit" class="btn btn-outline-primary" onclick="showAlert()" style="margin-left: 3px;">Order</button></td>
+            {% endif %}
+        </tr>
           {% endfor %}
         </tbody>
       </table> 
@@ -188,15 +245,19 @@ footer{
             <td>{{datas.recipe_price}}</td>
             <td>{{datas.recipe_description}}</td>
             <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
-            <td>
-              <a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Order</a>
-          </tr>
+            
+              {% if not verification_error %}
+            <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Order</a></td>
+          {% endif %}
+          {% if verification_error %}
+          <td><button type="submit" class="btn btn-outline-primary" onclick="showAlert()" style="margin-left: 3px;">Order</button></td>
+          {% endif %}
+        </tr>
           {% endfor %}
         </tbody>
       </table> 
     {% endif %}
    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   </body>
   <footer>

@@ -10,4 +10,5 @@ urlpatterns = [
   path('updateOrder/<int:cid>/<int:id>/' , updateOrder , name='updateOrder'),
   path('logout/' , logout_account , name = 'logout' ),
   path('mail/' , sendMail , name='mail'),
+  path('verify/<str:token>/', verify , name = 'verify'),
 ]

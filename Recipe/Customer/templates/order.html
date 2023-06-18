@@ -9,25 +9,23 @@
   
 </head>
 <style>
-  .header{
+  .header {
     color: red;
     text-align: center;
     margin: 15px;
     font-family: 'Times New Roman', Times, serif;
     font-size: 26px;
   }
-  .head{
-
+  .head {
     color: #0EF6CC;
   }
-  footer{
-  font-size: 18px;
-  font-style: italic;
-  color: #666;
-  text-align: center;
-  /* margin-top: 140px; */
-  padding: 30px;
-}
+  footer {
+    font-size: 18px;
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    padding: 30px;
+  }
 </style>
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -49,25 +47,27 @@
       </div>
     </div>
   </nav>
+
+
   {% if messages %}
   {% for message in messages %} 
   {% if message.tags == 'success' %} 
   <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Congratulation !!</strong> {{ message }}
+    <strong>Congratulations!</strong> {{ message }}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  {% endif %}
-{% if message.tags == 'error' %}
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>ERROR !!</strong> {{ message }}
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-{% endif %}
-
+  {% endif %}
+  {% if message.tags == 'error' %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>ERROR!</strong> {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
   {% endfor %}
   {% endif %}
+
   <div class="form">
-    <form class="col-4 mx-auto p-4 shadow-lg" method="post" style="background-color: hsl(0, 0%, 0%); margin-top: 20px;">
+    <form id="order-form" class="col-4 mx-auto p-4 shadow-lg" method="post" style="background-color: hsl(0, 0%, 0%); margin-top: 20px;">
       {% csrf_token %}
       <div class="mb-3">
         <label for="item" class="form-label" style="color: #0EF6CC;">Order Item</label>
@@ -98,11 +98,11 @@
           type="number" class="form-control" name="quantity" id="quantity" value="0"
           style="width: 350px; font-family: 'Times New Roman', Times, serif"
         />
-        </div>
-        <div class="mb-3">
+      </div>
+      <div class="mb-3">
         <label for="totalprice" class="form-label" style="color: #0EF6CC;">Total Price</label>
         <input
-          type="number" class="form-control" name="totalprice" id="totalprice" value="{{totalPrice}}" readonly "
+          type="number" class="form-control" name="totalprice" id="totalprice" value="{{totalPrice}}" readonly
           style="width: 350px; font-family: 'Times New Roman', Times, serif"
         />
       </div>
@@ -117,60 +117,103 @@
           style="width: 350px; font-family: 'Times New Roman', Times, serif"
         />
       </div>
-      <button type="submit" class="btn btn-primary">Order</button> 
-      </form>
+      <div class="mb-3">
+        <label for="address" class="form-label" style="color: #0EF6CC;">Address for Delivery</label>
+        <input
+          type="datetime"
+          class="form-control"
+          name="address"
+          id="address"
+          style="width: 350px; font-family: 'Times New Roman', Times, serif"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Order</button>
+    </form>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="address-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="address-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="address-modal">Provide Your Address Details</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" id="address-form">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                name="address"
+                id="address"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="submit-address">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <hr>
   <div class="header">Your Order History</div>
 
-
-<div class="container">
-  {% if not error_message %}
-  <table class="table table-hover table-dark table-striped">
-    <thead>
-      <tr>
-        <th scope="col"><div class="head">S.N</div></th>
-        <th scope="col"><div class="head">Item Name</div></th>
-        <th scope="col"><div class="head">Quantity</div></th>
-        <th scope="col"><div class="head">Total Price </div></th>
-        <th scope="col"><div class="head">Order Date</div></th>
-        <th scope="col"><div class="head">Status</div></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for order in orderData %}
-      <tr>
-        <th scope="row">{{forloop.counter}}</th>
-        <td><b>{{order.order_item}}</b></td>
-        <td>{{order.order_quantity}}</td>
-        <td>{{order.total_price}}</td>
-        <td>{{order.order_date}}</td>
-        <td>{{order.order_status}}</td>
-        
+  <div class="container">
+    {% if not error_message %}
+    <table class="table table-hover table-dark table-striped">
+      <thead>
+        <tr>
+          <th scope="col"><div class="head">S.N</div></th>
+          <th scope="col"><div class="head">Item Name</div></th>
+          <th scope="col"><div class="head">Quantity</div></th>
+          <th scope="col"><div class="head">Total Price </div></th>
+          <th scope="col"><div class="head">Order Date</div></th>
+          <th scope="col"><div class="head">Status</div></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orderData %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td><b>{{order.order_item}}</b></td>
+          <td>{{order.order_quantity}}</td>
+          <td>{{order.total_price}}</td>
+          <td>{{order.order_date}}</td>
+          <td>{{order.order_status}}</td>
         </tr>
         {% endfor %}
-</tbody>
-</table>
+      </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+      {{error_message}}
+    </div>
+    {% endif %}
+  </div>
 
-{% endif %}
-{% if error_message %}
-<div class="alert alert-danger"> <strong>Sorry</strong> {{error_message}}</div>
-{% endif %}
-</div>
-
-  <script>
-    // Calculate and set the total price when the quantity changes
-    document.getElementById('quantity').addEventListener('change', function() {
-      var itemPrice = parseFloat(document.getElementById('price').value);
-      var quantity = parseInt(this.value);
-      var totalPrice = itemPrice * quantity;
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-vqXaWzFksDPOPOzNl8x87Av1fMS4HXStMI4fPh7Q12b3iHrXCr3Kl/h/jYOzi7jA" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   
-      document.getElementById('totalprice').value = totalPrice;
-    });
+  <script>
+    // Calculate total price based on item price and quantity
+    function calculateTotalPrice() {
+      const itemPrice = document.getElementById('price').value;
+      const quantity = document.getElementById('quantity').value;
+      const totalPrice = itemPrice * quantity;
+      document.getElementById('totalprice').value = totalPrice
+    }
+
+    // Update total price when the quantity is changed
+    document.getElementById('quantity').addEventListener('change', calculateTotalPrice);
+
+    // Initialize total price on page load
+    calculateTotalPrice();
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
-<footer>
-  &copy; 2023 Designed and Built By Roman Humagain
-</footer>
 </html>
