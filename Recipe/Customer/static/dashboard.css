@@ -1,3 +1,102 @@
 th .head {
-  color:#0EF6CC ;
+  color: #0EF6CC;
+}
+
+footer {
+  font-size: 18px;
+  font-style: italic;
+  color: #666;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.category {
+  text-align: center;
+  color: rgb(14, 170, 197);
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 30px;
+  margin: 20px;
+}
+
+.txt {
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  color: rgb(234, 18, 18);
+  font-size: 28px;
+}
+
+.call-symbol:before {
+  content: '\260E';
+  /* Unicode for telephone symbol */
+}
+
+.contact-details i.fa-envelope {
+  color: red;
+}
+
+.contact-details a {
+  color: black;
+  font-size: 20px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.btn_verify {
+  margin-left: 1300px;
+  align-items: center;
+  /* margin-top: 50px; */
+}
+
+.verification-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10px;
+  padding-right: 15px;
+}
+
+.verification-text {
+  margin-top: 5px;
+  font-size: 15px;
+}
+
+.container {
+  margin-left: 100px;
+}
+* {
+box-sizing: border-box;
+}
+
+/* Style the search field */
+form.example input[type=text] {
+padding: 10px;
+font-size: 17px;
+border: 1px solid grey;
+float: left;
+width: 80%;
+background: #f1f1f1;
+}
+
+/* Style the submit button */
+form.example button {
+float: left;
+width: 20%;
+padding: 10px;
+background: #080808;
+color: white;
+font-size: 17px;
+border: 1px solid grey;
+border-left: none; /* Prevent double borders */
+cursor: pointer;
+}
+
+form.example button:hover {
+background: #393838;
+}
+
+/* Clear floats */
+form.example::after {
+content: "";
+clear: both;
+display: table;
 }

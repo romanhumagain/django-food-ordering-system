@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Dashboard</title>
+  <link rel="stylesheet" href="/static/dashboard.css">
+  <script src="https://kit.fontawesome.com/c6706ae0ec.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<style>
+  th .head {
+    color: #0EF6CC;
+  }
+
+  footer {
+    font-size: 18px;
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    padding-bottom: 30px;
+  }
+
+  .category {
+    text-align: center;
+    color: rgb(14, 170, 197);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    margin: 20px;
+  }
+
+  .txt {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(234, 18, 18);
+    font-size: 28px;
+  }
+
+  .call-symbol:before {
+    content: '\260E';
+    /* Unicode for telephone symbol */
+  }
+
+  .contact-details i.fa-envelope {
+    color: red;
+  }
+
+  .contact-details a {
+    color: black;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  .btn_verify {
+    margin-left: 1300px;
+    align-items: center;
+    /* margin-top: 50px; */
+  }
+
+  .verification-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 15px;
+  }
+
+  .verification-text {
+    margin-top: 5px;
+    font-size: 15px;
+  }
+
+  .carousel-indicators .active {
+
+    background-color: blue;
+  }
+
+  .carousel-indicators {
+    margin-top: 100px;
+  }
+
+  body .carousel-indicator li {
+    background-color: blue;
+  }
+
+  body .carousel-indicators {
+    bottom: 0;
+  }
+
+  body .carousel-control-prev-icon,
+  body .carousel-control-next-icon {
+    background-color: blue;
+
+  }
+
+  .prev {
+    margin-right: 60px;
+  }
+
+  .numb {
+    margin-right: 40px;
+  }
+</style>
+
+<body>
+  {% if verification_error %}
+  <script>
+    function showAlert() {
+      alert("please verify your account to order items")
+    }
+  </script>
+  {% endif %}
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      {% if not verification_error %}
+      <div class="verification-badge">
+        <img src="/static/badge.png" alt="Verification Badge" style="width: 35px; height: 35px;">
+        <div class="verification-text">Verified</div>
+      </div>
+      {% endif %}
+
+      <a class="navbar-brand" href="/dashboard/{{id}}/">Menu Items</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/dashboard/{{id}}/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/orderhistory/{{id}}/">View Order Details</a>
+          </li>
+        </ul>
+        <div class="contact-details ">
+          <p style="margin-right: 140px; margin-top: 17px;">
+            <i class="fa fa-envelope"></i>
+            <a href="mailto:romanhmgn6999@gmail.com">romanhmgn6999@gmail.com</a>
+          </p>
+        </div>
+
+
+        <form class="d-flex" role="search" method="GET">
+          <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+        <a href="/logout/" class="btn btn-outline-danger m-lg-2">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  {% if verification_error %}
+  <div class="alert alert-danger d-flex justify-content-between align-items-center">
+    <div>{{ verification_error }}</div>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" name="action" value="verify" class="btn btn-primary">Verify</button>
+    </form>
+  </div>
+  {% endif %}
+  <div class="alert alert-primary alert-dismissible fade show" role="alert">
+    <strong>Welcome !!</strong> {{username}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% if verification_error %}
+  {% if sentCode %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulation !!</strong> {{ sentCode }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
+  {% endif %}
+  {% if messages %}
+  {% for message in messages %}
+  {% if message.tags == 'success' %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulation !!</strong> {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+
+
+  <div class="container d-flex justify-content-center align-items-center">
+    <div id="carouselExampleIndicators" class="carousel slide">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+          aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+          aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+          aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="row">
+            {% if nonVegData %}
+            {% for datas in nonVegData %}
+            <div class="card m-2" style="width: 13rem; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+              <img src="/media/{{datas.recipe_image}}" class="card-img-top"
+                style="width: 100%; height: 150px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;"
+                alt="img">
+              <div class="card-body shadow-sm">
+                <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{datas.recipe_name}}</h5>
+                <!-- <p class="card-text">{{datas.recipe_description}}</p> -->
+                <div class="row align-items-center">
+                  <div class="col-sm-6 col-lg-8">
+                    <p style="margin-bottom: 0;">
+                      <span style="font-weight: bold;">Rs:</span> {{datas.recipe_price}}
+                    </p>
+                  </div>
+                  <div class="col-sm-6 col-lg-4">
+                    <div class="form-group mb-0" style="margin-right: 20px;">
+                      <input type="number" class="form-control" style="width: 75px; height: 40px; border-radius: 5px;"
+                        value="1" id="numberField_{{datas.id}}">
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-primary mt-3">Add to Cart</button>
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="..." class="d-block w-100" alt="...">
+      </div>
+    </div>
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+</body>
+<footer>
+  &copy;2023 Designed and Built By Roman Humagain
+</footer>
+
+</html>

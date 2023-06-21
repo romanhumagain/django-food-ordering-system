@@ -4,8 +4,8 @@ from django.db import models
 
 class Recipe(models.Model):
   recipe_name = models.CharField(max_length=200)
-  recipe_description = models.TextField(max_length=500)
-  recipe_category = models.TextField(max_length=300, default='Uncategorized')
+  recipe_description = models.TextField(max_length=100)
+  recipe_category = models.TextField(max_length=100, default='Uncategorized')
   recipe_price = models.IntegerField(default=0)
   recipe_image = models.ImageField(upload_to='images')
   recipe_view_count = models.IntegerField(default=1)

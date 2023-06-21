@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order History</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <style>
    th .head {
@@ -27,27 +28,96 @@
   /* margin-top: 140px; */
   padding: 30px;
 }
+* {
+    box-sizing: border-box;
+  }
+
+  /* Style the search field */
+  form.example input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+  }
+
+  /* Style the submit button */
+  form.example button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #080808;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    /* Prevent double borders */
+    cursor: pointer;
+  }
+
+  form.example button:hover {
+    background: #393838;
+  }
+
+  /* Clear floats */
+  form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }.logo {
+    margin-left: 10px;
+    width: 80px;
+    height: 80px;
+    background-color: #f06292;
+    /* Set your desired background color */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-text {
+    color: #0c0c0c;
+    /* Set your desired text color */
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .logo-highlight {
+    color: #09cee3;
+    /* Set your desired highlight color */
+  }
+  
 </style>
 <body>
  
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/dashboard/{{customerId}}/">Dashboard</a>
+
+      <div class="logo">
+        <span class="logo-text">Food<span class="logo-highlight">Xpress</span></span>
+      </div>
+  
+
+    
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin-left: 50px;">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard/{{customerId}}/">Dashboard</a>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/orderhistory/{{customerId}}/">Home</a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">.....</a>
-          </li> -->
+          
         </ul>
-        <form class="d-flex" role="search" method="GET">
-          <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+        <form class="example">
+          <input type="text" placeholder="Search.." name="search">
+          <button type="submit"><i class="fa fa-search"></i></button>
         </form>
       </div>
     </div>
@@ -79,6 +149,7 @@
         <th scope="col"><div class="head">Quantity</div></th>
         <th scope="col"><div class="head">Total Price </div></th>
         <th scope="col"><div class="head">Order Date</div></th>
+        <th scope="col"><div class="head">Address</div></th>
         <th scope="col"><div class="head">Status</div></th>
         <th scope="col"><div class="head">Action</div></th>
       </tr>
@@ -91,24 +162,111 @@
         <td>{{order.order_quantity}}</td>
         <td>{{order.total_price}}</td>
         <td>{{order.order_date}}</td>
+        <td>{{order.address}}</td>
         <td>{{order.order_status}}</td>
+        <!-- <td>{{order.id}}</td> -->
         <td><a href="/deleteOrder/{{order.id}}/" class="btn btn-outline-danger" style="margin: 7px;">Delete</a>
-          <a href="/updateOrder/{{customerId}}/{{order.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Update</a></td>
-      
-        
+          <!-- <a href="/updateOrder/{{customerId}}/{{order.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Update</a></td> -->
+          <a href="" class="btn btn-outline-primary update-order-btn" 
+           data-bs-toggle="modal" data-bs-target="#updateModal" 
+           item_name = "{{order.order_item}}"
+           quantity = "{{order.order_quantity}}"
+           address = "{{order.address}}"
+           id = "{{order.id}}"
+           style="margin-left: 3px;">Update</a></td>
+
         </tr>
         {% endfor %}
 </tbody>
 </table>
 </div>
 {% endif %}
+
+
+<!-- Modal -->
+<div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateModal">Update Order</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form">
+          <form  method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="item" class="form-label" >Order Item</label>
+              <input
+                type="text"
+                class="form-control"
+                name="item"
+                id="item"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="quantity" class="form-label" >Quantity</label>
+              <input
+                type="number" class="form-control" name="quantity" id="quantity"
+                style="width: 350px; font-family: 'Times New Roman' Times, serif"
+              />
+              </div>
+            <div class="mb-3">
+              <label for="address" class="form-label" >Address</label>
+              <input
+                type="text" class="form-control" name="address" id="address"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif"
+              />
+            </div>
+            <div class="mb-3">
+              <input
+                type="text" class="form-control" name="id" id="id"
+                style="width: 350px; font-family: 'Times New Roman', Times, serif; display: none;"
+              />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" name="action" value="update" class="btn btn-primary">Update</button>
+            </div>
+            </form>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
 {% if error_message %}
 
 <div class="alert alert-danger" role="alert">
   <strong>Sorry! </strong> {{ error_message }}</div>
   
 {% endif %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const updateOrderBtn = document.querySelectorAll(".update-order-btn");
+    const itemInput = document.querySelector("#item");
+    const quantityInput = document.querySelector("#quantity");
+    const addressInput = document.querySelector("#address");
+    const idInput = document.querySelector("#id");
 
+    updateOrderBtn.forEach(function(button) {
+      button.addEventListener("click", function(event) {
+        const itemName = event.target.getAttribute("item_name");
+        const quantity = event.target.getAttribute("quantity");
+        const address = event.target.getAttribute("address");
+        const id = event.target.getAttribute("id");
+        itemInput.value = itemName;
+        quantityInput.value = quantity;
+        addressInput.value = address;
+        idInput.value = id;
+      });
+    });
+  });
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <footer>

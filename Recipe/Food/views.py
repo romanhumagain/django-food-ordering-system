@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from . models import *
 from django.contrib import messages 
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate , login as auth_login , logout
 from django.contrib.auth.decorators import login_required
-
+from Food.utils import *
+from django.conf import settings
 # Create your views here.
 # @login_required(login_url = '/login/')
 def recipe(request):
@@ -85,9 +86,46 @@ def logout_page(request):
 def UserTable(request):
     data = User.objects.all()
     
+    if request.method == 'POST':
+        data = request.POST
+        action = data.get('action')
+        
+        if action == 'send':
+            subject = data.get('subject')
+            message = data.get('message')
+            to = data.get('to')
+            
+            attachment = request.FILES.get('attachment')
+            
+        
+            email = EmailMessage(
+                subject=subject,
+                body=message,
+                from_email=settings.EMAIL_HOST_USER,
+                to=[to],
+            )
+            
+            if attachment:
+                attachment_name = attachment.name
+                attachment_content_type = attachment.content_type
+                attachment_content = attachment.read()
+                email.attach(attachment_name, attachment_content, attachment_content_type)
+            email.send()
+            messages.success(request ,"Successfully Sent Your Email")
+            return redirect('/recipe/table/')
+                
     if request.GET.get('search'):
         data = data.filter(username__icontains =request.GET.get('search'))
     
     context = {'querySet':data}
     
     return render(request, 'table.html' , context)
+
+
+def get_user_email(request, cid):
+    user = User.objects.get(id=cid)  # Replace with your logic to retrieve the user
+    email = user.email
+    response = {
+        'email': email
+    }
+    return JsonResponse(response)

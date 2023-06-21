@@ -14,6 +14,7 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 from Customer.utils import *
 
+from math import ceil
 import uuid
 # Create your views here.
 def home(request):
@@ -61,56 +62,65 @@ def home(request):
     return render(request, 'home.html')
 
 def customer_dashboard(request, id):
-    userData = User.objects.filter(id=id)
-    profile = Profile.objects.filter(user=userData.first())
-    
+    userData = User.objects.get(id=id)
+    profile = Profile.objects.filter(user=userData)
+
+    order_count = Order.objects.filter(user=userData).count()
+
+    context = {'order_count': order_count}
+
     if request.method == 'POST':
         data = request.POST
         action = data.get('action')
-        
-        if action == 'verify':
-            email = userData.first().email
-            token = profile.first().token
-            
-            send_verification(email , token)
-            
-            messages.success(request , 'Successfully Sent Your Verification Code')
-      
-    name = ""
-    token = ""
-    email = ""
-    verification_status = False
-    if userData.exists():
-        name = userData.first().username
-        email = userData.first().email
-        
-    if profile.exists():
-        token = profile.first().token
-        verification_status = profile.first().is_verified
-        
 
-    querySet = Recipe.objects.all()
-    context = {'datas': querySet, 'id': id}  # Include 'id' in the context
-    
-    veg = Recipe.objects.filter(recipe_category='veg')
-    nonveg = Recipe.objects.filter(recipe_category='nonveg')
-    beverage = Recipe.objects.filter(recipe_category='beverage')
+        if action == 'verify':
+            email = userData.email
+            token = profile.first().token
+
+            send_verification(email, token)
+
+            context['sentCode'] = 'Successfully Sent Your Verification Code'
+
+    name = userData.username
+    email = userData.email
+    verification_status = profile.first().is_verified
+
+    recipe_data = Recipe.objects.all()
+    context.update({'datas': recipe_data, 'id': id})  # Merge dictionaries using update()
+
+    veg = recipe_data.filter(recipe_category='veg')
+    nonveg = recipe_data.filter(recipe_category='nonveg')
+    beverage = recipe_data.filter(recipe_category='beverage')
+
+    # Calculate the number of slides needed
+    n_nonveg = len(nonveg)
+    nSlides = ceil(n_nonveg / 4)
+    context.update({'no_of_slides': nSlides})
+
     search = request.GET.get('search')
     if search:
         veg = veg.filter(recipe_name__icontains=search)
         nonveg = nonveg.filter(recipe_name__icontains=search)
         beverage = beverage.filter(recipe_name__icontains=search)
 
-    context = {'datas': querySet, 'vegData': veg, 'nonVegData': nonveg, 'beverageData': beverage,
-               'username': name, 'id': id}
-    
+    context.update({
+        'vegData': veg,
+        'nonVegData': nonveg,
+        'beverageData': beverage,
+        'username': name,
+        'id': id,
+    })
+
     if not veg and not nonveg and not beverage:
-        context['error_message'] ='No items found'
-        
+        context['error_message'] = 'No items found'
+
     if not verification_status:
-        context['verification_error'] = 'please verify your account'
-        
+        context['verification_error'] = 'Please verify your account'
+
     return render(request, 'dashboard.html', context)
+
+
+
 
 def customer_order(request, cid, id):
     querySet = Recipe.objects.filter(id=id).first()
@@ -120,13 +130,21 @@ def customer_order(request, cid, id):
     orderData = Order.objects.filter(user=user)
     
     if request.method == 'POST':
+        
         data = request.POST
+        
         name = data.get('item')
         itemPrice = data.get('price')
         quantity = data.get('quantity')
         order_date = today
         total_price = data.get('totalprice')
         address = data.get('address')
+        
+        try:
+            recipe = Recipe.objects.get(recipe_name=name)
+        except Recipe.DoesNotExist:
+            return HttpResponse("recipe doesn't exists")
+            pass
         
         if total_price == "":
             messages.error(request, 'Please provide the quantity of price that you want to order')
@@ -139,7 +157,8 @@ def customer_order(request, cid, id):
                 order_quantity=quantity,
                 order_date=order_date,
                 address=address,
-                user=user
+                user=user,
+                recipe = recipe
             )
             messages.success(request, "Successfully ordered your item")
             return redirect(f'/dashboard/{cid}')
@@ -164,10 +183,33 @@ def OrderHistory(request, cid):
     user = User.objects.get(id=cid)
     orderData = Order.objects.filter(user=user)
     
+    if request.method == 'POST':
+        data = request.POST
+        action = data.get('action')
+        
+        if action == "update":
+            id = data.get('id')
+            item_name = data.get('item')
+            quantity = data.get('quantity')
+            address = data.get('address')
+            
+            recipe = Recipe.objects.get(recipe_name = item_name)
+            item_price = recipe.recipe_price
+            
+            total_price = item_price * int(quantity)
+            
+            order = Order.objects.get(id = id)
+            order.address = address
+            order.order_quantity = quantity
+            order.total_price = total_price
+            
+            order.save()
+            messages.success(request, "Successfully updated you Order")
+            
     search = request.GET.get('search')
     if search:
         orderData = orderData.filter(order_item__icontains=search)
-    context = {'orderData': orderData, 'customerId': cid}
+    context = {'orderData': orderData, 'customerId': cid  }
     
     if not orderData:
         context['error_message'] = 'No orders found.'
@@ -184,29 +226,35 @@ def deleteOrder(request, id):
     except Order.DoesNotExist:
         return render(request, 'OrderHistory.html')
 
-def updateOrder(request, cid ,id):
+def updateOrder(request, cid, id):
     try:
         orderDetails = Order.objects.get(id=id)
         orderItem = orderDetails.order_item
-        foodDetails = Recipe.objects.get(recipe_name=orderItem)
+        foodDetails = Recipe.objects.filter(recipe_name=orderItem).first()  # Retrieve the first matching Recipe object
+        
+        # Check if foodDetails is None (no matching recipe found)
+        if foodDetails is None:
+            raise Recipe.DoesNotExist
+
         itemPrice = foodDetails.recipe_price
         today = date.today()
+
         if request.method == 'POST':
             data = request.POST
             itemName = data.get('item')
             itemPrice = data.get('price')
             quantity = data.get('quantity')
             totalPrice = data.get('totalprice')
-                
+
             orderDetails.order_item = itemName
             orderDetails.total_price = totalPrice
             orderDetails.order_quantity = quantity
             orderDetails.order_date = today
-                
+
             orderDetails.save()
-            messages.success(request , 'Successfully Updated Your Order')
+            messages.success(request, 'Successfully Updated Your Order')
             return redirect(f'/orderhistory/{cid}/')
-            
+
     except Order.DoesNotExist:
         pass
     except Recipe.DoesNotExist:
@@ -214,6 +262,7 @@ def updateOrder(request, cid ,id):
 
     context = {'order': orderDetails, 'price': itemPrice, 'date': today}
     return render(request, 'UpdateOrder.html', context)
+
 
 def sendMail(request):
     if request.method == 'POST':

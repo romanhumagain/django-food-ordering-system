@@ -1,266 +1,380 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Customer Dashboard</title>
-    <link rel="stylesheet" href="/static/dashboard.css">
-    <script src="https://kit.fontawesome.com/c6706ae0ec.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  </head>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Dashboard</title>
+  {% load static %}
+  <link rel="stylesheet" href="{/static/dashboard.css}">
+  <script src="https://kit.fontawesome.com/c6706ae0ec.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-...your-integrity-hash-here..." crossorigin="anonymous" />
+
+</head>
 <style>
   th .head {
-  color:#0EF6CC ;
-}
-footer{
-  font-size: 18px;
-  font-style: italic;
-  color: #666;
-  text-align: center;
-  padding-bottom: 30px;
-}
-.category{
-  text-align: center;
-  color: rgb(14, 170, 197);
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 30px;
-  margin: 20px;
-}
-.txt {
-  text-align: center;
-  font-family: 'Times New Roman', Times, serif;
-  color: rgb(234, 18, 18);
-  font-size: 28px;
-}
-
-.call-symbol:before {
-      content: '\260E'; /* Unicode for telephone symbol */
-}
-.contact-details i.fa-envelope {
-  color: red;
-}
-.contact-details a {
-  color: black;
-  font-size: 20px;
-  font-family:'Times New Roman', Times, serif;
-}
-.btn_verify{
-  margin-left: 1300px;
-  align-items: center;
-  /* margin-top: 50px; */
-}
-.verification-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-left: 10px;
-  padding-right: 15px;
-}
-.verification-text {
-  margin-top: 5px;
-  font-size: 15px;
-}
-
-</style>
-  <body>
-    {% if verification_error %}
-<script>
-  function showAlert(){
-alert("please verify your account to order items")
+    color: #0EF6CC;
   }
-  </script>
+
+  footer {
+    font-size: 18px;
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    padding-bottom: 30px;
+  }
+
+  .category {
+    text-align: center;
+    color: rgb(14, 170, 197);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    margin: 20px;
+  }
+
+  .txt {
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(234, 18, 18);
+    font-size: 28px;
+  }
+
+  .call-symbol:before {
+    content: '\260E';
+    /* Unicode for telephone symbol */
+  }
+
+  .contact-details i.fa-envelope {
+    color: red;
+  }
+
+  .contact-details a {
+    color: black;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  .btn_verify {
+    margin-left: 1300px;
+    align-items: center;
+    /* margin-top: 50px; */
+  }
+
+  .verification-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 15px;
+  }
+
+  .verification-text {
+    margin-top: 5px;
+    font-size: 15px;
+  }
+
+  .container {
+    margin-left: 100px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Style the search field */
+  form.example input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+  }
+
+  /* Style the submit button */
+  form.example button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #080808;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    /* Prevent double borders */
+    cursor: pointer;
+  }
+
+  form.example button:hover {
+    background: #393838;
+  }
+
+  /* Clear floats */
+  form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .food-delivery-icon {
+    color: red;
+  }
+
+  .logo {
+    margin-left: 10px;
+    width: 80px;
+    height: 80px;
+    background-color: #f06292;
+    /* Set your desired background color */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-text {
+    color: #0c0c0c;
+    /* Set your desired text color */
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .logo-highlight {
+    color: #09cee3;
+    /* Set your desired highlight color */
+  }
+</style>
+
+
+{% if verification_error %}
+<script>
+  function showAlert() {
+    alert("please verify your account to order items")
+  }
+</script>
 {% endif %}
 
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
 
-        {% if not verification_error %}
-        <div class="verification-badge">
-          <img src="/static/badge.png" alt="Verification Badge" style="width: 35px; height: 35px;">
-          <div class="verification-text">Verified</div>
-        </div>
-        {% endif %}
-      
-        <a class="navbar-brand" href="/dashboard/{{id}}/">Menu Items</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/dashboard/{{id}}/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/orderhistory/{{id}}/">View Order Details</a>
-            </li>
-          </ul>
-          <div class="contact-details ">
-            <p style="margin-right: 140px; margin-top: 17px;">
-              <i class="fa fa-envelope"></i>
-              <a href="mailto:romanhmgn6999@gmail.com">romanhmgn6999@gmail.com</a>
-            </p>
-          </div>
-          
-        
-          <form class="d-flex" role="search" method="GET">
-            <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-primary" type="submit">Search</button>
-          </form>
-          <a href="/logout/" class="btn btn-outline-danger m-lg-2">Logout</a>
-        </div>
-      </div>
-    </nav>
-    
-    {% if verification_error %}
-    <div class="alert alert-danger d-flex justify-content-between align-items-center">
-        <div>{{ verification_error }}</div>
-        <form method="post">
-          {% csrf_token %}
-        <button type="submit" name="action" value="verify" class="btn btn-primary">Verify</button>
-        </form>
+    <!-- <i class="fas fa-truck food-delivery-icon" style="width: 160; height: 160;"></i> -->
+    <div class="logo">
+      <span class="logo-text">Food<span class="logo-highlight">Xpress</span></span>
     </div>
-{% endif %}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Welcome !!</strong> {{username}}
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb- mb-lg-0" style="margin-left: 350px;">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/dashboard/{{id}}/">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="/dashboard/{{id}}/">About</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="/dashboard/{{id}}/">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/orderhistory/{{id}}/">View Order Details</a>
+        </li>
+
+      </ul>
+      <!-- 
+      
+      <div class="contact-details ">
+        <p style="margin-right: 140px; margin-top: 17px;">
+          <i class="fa fa-envelope"></i>
+          <a href="mailto:romanhmgn6999@gmail.com">romanhmgn6999@gmail.com</a>
+        </p>
+      </div>
+        -->
+      <div class="cart" style="margin-right: 7px;">
+        <i class="fa fa-shopping-cart cart-icon " style="font-size: 40px; left: 0px;"></i>
+      </div>
+      <span class="badge badge-dark notification-badge"
+        style="color: rgb(250, 247, 247); position: relative; top: -15px; right: 0px; background-color: rgb(7, 7, 7); width: 26px; height: 26px; display: flex;  justify-content: center; align-items: center; border-radius: 50%; margin-right: 45px;">{{order_count}}</span>
+      <span class="sr-only">unread messages</span>
+
+      <form class="example">
+        <input type="text" placeholder="Search.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+
+      <a href="/logout/" class="btn btn-outline-dark m-lg-2">Logout</a>
+    </div>
+  </div>
+</nav>
+
+{% if verification_error %}
+<div class="alert alert-danger d-flex justify-content-between align-items-center">
+  <div>{{ verification_error }}</div>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" name="action" value="verify" class="btn btn-primary">Verify</button>
+  </form>
 </div>
-  {% if verification_error %}
-  {% if messages %}
-  {% for message in messages %} 
-  {% if message.tags == 'success' %} 
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Congratulation !!</strong> {{ message }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+{% endif %}
+<div class="alert alert-dark d-flex justify-content-between align-items-center" role="alert">
+  <strong>Welcome !! {{username}}</strong>
+
+  {% if not verification_error %}
+  <div class="verification-badge">
+    <img src="/static/badge.png" alt="Verification Badge" style="width: 25px; height: 25px;">
+    <div class="verification-text">Verified</div>
   </div>
   {% endif %}
-  {% endfor %}
-  {% endif %}
-  {% endif %}
-
-
-   <div class="container">
-    <hr>
-    <div class="text">
-      <div class="txt"><strong>Recipe Details</strong> </div>
-    </div>
-    <hr>
-    
-{% if error_message %}
-<div class="alert alert-danger "><strong>Sorry !</strong> {{error_message}}</div>
+</div>
+{% if verification_error %}
+{% if sentCode %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Congratulation !!</strong> {{ sentCode }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
 {% endif %}
 
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Congratulation !!</strong> {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+<div class="container">
+  <div class="row m-4">
     {% if vegData %}
-    <div class="category">Menu Items <strong>Veg</strong></div>
-    <table class="table table-hover table-dark table-striped">
-        <thead>
-          <tr>
-            <th scope="col"><div class="head">S.N</div></th>
-            <th scope="col"><div class="head">Recipe Name</div></th>
-            <th scope="col"><div class="head">Recipe Price</div></th>
-            <th scope="col"><div class="head">Recipe Description</div></th>
-            <th scope="col"><div class="head">Recipe Image</div></th>
-            <th scope="col"><div class="head">Actions</div></th>
-      
-          </tr>
-        </thead>
-        <tbody>
-          {% for datas in vegData %}
-          <tr>
-            <th scope="row">{{forloop.counter}}</th>
-            <td><b>{{datas.recipe_name}}</b></td>
-            <td>{{datas.recipe_price}}</td>
-            <td>{{datas.recipe_description}}</td>
-            <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
-            {% if not verification_error %}
-            <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Order</a></td>
-          {% endif %}
+    <h2>Veg Items</h2>
+    <hr>
+    {% for datas in vegData %}
+    <div class="card m-3 shadow-lg"
+      style="width: 13rem; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+      <img src="/media/{{datas.recipe_image}}" class="card-img-top"
+        style="width: 100%; height: 150px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;"
+        alt="img">
+      <div class="card-body shadow-sm">
+        <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{datas.recipe_name}}</h5>
+        <!-- <p class="card-text">{{datas.recipe_description}}</p> -->
+        <div class="row align-items-center">
+          <div class="col-sm-6 col-lg-8">
+            <p style="margin-bottom: 0;">
+              <span style="font-weight: bold;">Rs:</span> {{datas.recipe_price}}
+            </p>
+          </div>
+        </div>
 
-          {% if verification_error %}
-          <td><button type="submit" class="btn btn-outline-primary" onclick="showAlert()" style="margin-left: 3px;">Order</button></td>
-          {% endif %}
-
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table> 
+        {% if not verification_error %}
+        <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Add to
+            Cart</a>
+        </td>
+        {% endif %}
+        {% if verification_error %}
+        <td><button type="submit" class="btn btn-outline-primary" onclick="showAlert()" style="margin-left: 3px;">Add to
+            Cart</button></td>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
     {% endif %}
-    
+  </div>
+</div>
+
+
+<!-- for Non Veg -->
+
+<div class="container">
+  <div class="row m-4">
     {% if nonVegData %}
-      <div class="category">Menu Items <strong>Non Veg</strong> </div>
-      <table class="table table-hover table-dark table-striped">
-        <thead>
-          <tr>
-            <th scope="col"><div class="head">S.N</div></th>
-            <th scope="col"><div class="head">Recipe Name</div></th>
-            <th scope="col"><div class="head">Recipe Price</div></th>
-            <th scope="col"><div class="head">Recipe Description</div></th>
-            <th scope="col"><div class="head">Recipe Image</div></th>
-            <th scope="col"><div class="head">Actions</div></th>
-      
-          </tr>
-        </thead>
-        <tbody>
-          {% for datas in nonVegData %}
-          <tr>
-            <th scope="row">{{forloop.counter}}</th>
-            <td><b>{{datas.recipe_name}}</b></td>
-            <td>{{datas.recipe_price}}</td>
-            <td>{{datas.recipe_description}}</td>
-            <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
-              {% if not verification_error %}
-            <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Order</a></td>
-            {% endif %}
+    <h2>Non Veg Items</h2>
+    <hr>
+    {% for datas in nonVegData %}
+    <div class="card m-3 shadow-lg"
+      style="width: 13rem; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+      <img src="/media/{{datas.recipe_image}}" class="card-img-top"
+        style="width: 100%; height: 150px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;"
+        alt="img">
+      <div class="card-body ">
+        <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{datas.recipe_name}}</h5>
+        <!-- <p class="card-text">{{datas.recipe_description}}</p> -->
+        <div class="row align-items-center">
+          <div class="col-sm-6 col-lg-8">
+            <p style="margin-bottom: 0;">
+              <span style="font-weight: bold;">Rs:</span> {{datas.recipe_price}}
+            </p>
+          </div>
+        </div>
+        {% if not verification_error %}
+        <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Add to
+            Cart</a>
+        </td>
+        {% endif %}
+        {% if verification_error %}
+        <td><button type="submit" class="btn btn-outline-primary" onclick="showAlert()" style="margin-left: 3px;">Add to
+            Cart</button></td>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+</div>
 
-            {% if verification_error %}
-            <td><button type="submit" class="btn btn-outline-primary" onclick="showAlert()" style="margin-left: 3px;">Order</button></td>
-            {% endif %}
-        </tr>
-          {% endfor %}
-        </tbody>
-      </table> 
-    {% endif %}
-    
+<!-- for beverage -->
+
+<div class="container">
+  <div class="row m-4">
     {% if beverageData %}
-      <div class="category">Menu Items <strong>Beverage</strong> </div>
-      <table class="table table-hover table-dark table-striped">
-        <thead>
-          <tr>
-            <th scope="col"><div class="head">S.N</div></th>
-            <th scope="col"><div class="head">Recipe Name</div></th>
-            <th scope="col"><div class="head">Recipe Price</div></th>
-            <th scope="col"><div class="head">Recipe Description</div></th>
-            <th scope="col"><div class="head">Recipe Image</div></th>
-            <th scope="col"><div class="head">Actions</div></th>
-      
-      
-          </tr>
-        </thead>
-        <tbody>
-          {% for datas in beverageData %}
-          <tr>
-            <th scope="row">{{forloop.counter}}</th>
-            <td><b>{{datas.recipe_name}}</b></td>
-            <td>{{datas.recipe_price}}</td>
-            <td>{{datas.recipe_description}}</td>
-            <td> <img src="/media/{{datas.recipe_image}}" style="height: 130 px; width: 120px;"></td>
-            
-              {% if not verification_error %}
-            <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Order</a></td>
-          {% endif %}
-          {% if verification_error %}
-          <td><button type="submit" class="btn btn-outline-primary" onclick="showAlert()" style="margin-left: 3px;">Order</button></td>
-          {% endif %}
-        </tr>
-          {% endfor %}
-        </tbody>
-      </table> 
+    <h2>Beverage Items</h2>
+    <hr>
+    {% for datas in beverageData %}
+    <div class="card m-3 shadow-lg"
+      style="width: 13rem; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+      <img src="/media/{{datas.recipe_image}}" class="card-img-top"
+        style="width: 100%; height: 150px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;"
+        alt="img">
+      <div class="card-body shadow-sm">
+        <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold;">{{datas.recipe_name}}</h5>
+        <!-- <p class="card-text">{{datas.recipe_description}}</p> -->
+        <div class="row align-items-center">
+          <div class="col-sm-6 col-lg-8">
+            <p style="margin-bottom: 0;">
+              <span style="font-weight: bold;">Rs:</span> {{datas.recipe_price}}
+            </p>
+          </div>
+        </div>
+        {% if not verification_error %}
+        <td><a href="/order/{{id}}/{{datas.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Add to
+            Cart</a>
+        </td>
+        {% endif %}
+        {% if verification_error %}
+        <td><button type="submit" class="btn btn-outline-primary" onclick="showAlert()" style="margin-left: 3px;">Add to
+            Cart</button></td>
+        {% endif %}
+      </div>
+      </form>
+    </div>
+    {% endfor %}
     {% endif %}
-   </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-  </body>
-  <footer>
-    &copy;2023 Designed and Built By Roman Humagain
-  </footer>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+<footer>
+  &copy;2023 Designed and Built By Roman Humagain
+</footer>
+
 </html>
