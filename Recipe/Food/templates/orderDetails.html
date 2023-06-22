@@ -100,21 +100,17 @@
         <span class="logo-text">Food<span class="logo-highlight">Xpress</span></span>
       </div>
   
-
-    
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin-left: 50px;">
           <li class="nav-item">
-            <a class="nav-link" href="/dashboard/{{customerId}}/">Dashboard</a>
+            <a class="nav-link active" aria-current="page" href="/recipe/userOrder/{{uid}}/">Home</a>
           </li>
-
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/orderhistory/{{customerId}}/">Home</a>
+            <a class="nav-link" href="/recipe/table/">view user details</a>
           </li>
-          
         </ul>
         <form class="example">
           <input type="text" placeholder="Search.." name="search">
@@ -134,7 +130,7 @@
   {% endfor %}
   {% endif %}
   <hr>
-  <div class="header"> <strong>Your Order History</strong></div>
+  <div class="header"> <strong>Order Details Of {{user.username}}</strong></div>
 
   {% if not error_message %}
 <div class="container">
@@ -162,15 +158,16 @@
         <td>{{order.address}}</td>
         <td>{{order.order_status}}</td>
         <!-- <td>{{order.id}}</td> -->
-        <td><a href="/deleteOrder/{{order.id}}/" class="btn btn-outline-danger" style="margin: 7px;">Delete</a>
-          <!-- <a href="/updateOrder/{{customerId}}/{{order.id}}/" class="btn btn-outline-primary" style="margin-left: 3px;">Update</a></td> -->
-          <a href="" class="btn btn-outline-primary update-order-btn" 
-           data-bs-toggle="modal" data-bs-target="#updateModal" 
-           item_name = "{{order.order_item}}"
-           quantity = "{{order.order_quantity}}"
-           address = "{{order.address}}"
-           id = "{{order.id}}"
-           style="margin-left: 3px;">Update</a></td>
+        <td><a href="/recipe/approval/{{order.id}}/" class="btn btn-outline-primary" style="margin: 7px;">Approve</a>
+          <a href="/deleteOrder/{{order.id}}/" class="btn btn-outline-danger update-order-btn" style="margin-left: 3px;">Cancel</a>
+          
+          <div class="cart" style="margin-right: 7px;">
+            <i class="fa fa-shopping-cart cart-icon " style="font-size: 40px; left: 0px;"></i>
+          </div>
+          <span class="badge badge-dark notification-badge"
+            style="color: rgb(250, 247, 247); position: relative; top: -15px; right: 0px; background-color: rgb(7, 7, 7); width: 26px; height: 26px; display: flex;  justify-content: center; align-items: center; border-radius: 50%; margin-right: 45px;">{{order_count}}</span>
+          <span class="sr-only">unread messages</span>
+        </td>
 
         </tr>
         {% endfor %}
@@ -242,28 +239,7 @@
   <strong>Sorry! </strong> {{ error_message }}</div>
   
 {% endif %}
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const updateOrderBtn = document.querySelectorAll(".update-order-btn");
-    const itemInput = document.querySelector("#item");
-    const quantityInput = document.querySelector("#quantity");
-    const addressInput = document.querySelector("#address");
-    const idInput = document.querySelector("#id");
 
-    updateOrderBtn.forEach(function(button) {
-      button.addEventListener("click", function(event) {
-        const itemName = event.target.getAttribute("item_name");
-        const quantity = event.target.getAttribute("quantity");
-        const address = event.target.getAttribute("address");
-        const id = event.target.getAttribute("id");
-        itemInput.value = itemName;
-        quantityInput.value = quantity;
-        addressInput.value = address;
-        idInput.value = id;
-      });
-    });
-  });
-</script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <footer>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , HttpResponseRedirect
 from django.http import HttpResponse, JsonResponse
 from . models import *
 from django.contrib import messages 
@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate , login as auth_login , logout
 from django.contrib.auth.decorators import login_required
 from Food.utils import *
+from Customer.models import *
 from django.conf import settings
 # Create your views here.
 # @login_required(login_url = '/login/')
@@ -129,3 +130,33 @@ def get_user_email(request, cid):
         'email': email
     }
     return JsonResponse(response)
+
+def user_order(request , uid):
+    user = User.objects.get(id = uid)
+    
+    order = Order.objects.filter(user = user)
+    
+    
+    
+    search = request.GET.get('search')
+    if search:
+        order = order.filter(order_item__icontains = search)
+    
+    context = {'orderData':order , 'user':user , 'uid':uid}
+    
+    if not order:
+        context['error_message']='No order Items Found'
+       
+    return render(request , 'orderDetails.html' , context)
+
+def approval(request , oid):
+    try:
+        order = Order.objects.get(id = oid)
+        order.order_status = "Approved"
+        order.save()
+        messages.success(request , 'successfully approved user request ' )
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
+    except Exception as e:
+        return render(request , 'orderDetails.html')
+    

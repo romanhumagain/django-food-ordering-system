@@ -16,6 +16,7 @@ from Customer.utils import *
 
 from math import ceil
 import uuid
+
 # Create your views here.
 def home(request):
     if request.method == 'POST':
@@ -103,6 +104,7 @@ def customer_dashboard(request, id):
         nonveg = nonveg.filter(recipe_name__icontains=search)
         beverage = beverage.filter(recipe_name__icontains=search)
 
+
     context.update({
         'vegData': veg,
         'nonVegData': nonveg,
@@ -112,7 +114,7 @@ def customer_dashboard(request, id):
     })
 
     if not veg and not nonveg and not beverage:
-        context['error_message'] = 'No items found'
+        context['error_message'] = 'No such item found'
 
     if not verification_status:
         context['verification_error'] = 'Please verify your account'

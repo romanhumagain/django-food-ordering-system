@@ -15,21 +15,47 @@
   text-align: center;
   margin-top: 68px;
 }
+
+.logo {
+    margin-left: 20px;
+    width: 80px;
+    height: 80px;
+    background-color: #f06292;
+    /* Set your desired background color */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-text {
+    color: #ffffff;
+    /* Set your desired text color */
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .logo-highlight {
+    color: #09cee3;
+    /* Set your desired highlight color */
+  }
   </style>
   <nav class="navbar navbar-expand-lg bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#" style="color: white;">Recipes</a>
+
+      <div class="logo">
+        <span class="logo-text">Food<span class="logo-highlight">Xpress</span></span>
+      </div>
+  
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#" style="color: white;">Home</a>
-          </li>
+          
         </ul>
       </div>
-      <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#login" type="submit" style="margin-right:30px; width: 100px; background-color: black; color: red;">Login</button>
+      <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#login" type="submit" style="margin-right:30px; width: 100px;">Login</button>
      
     </div>
   </nav>
