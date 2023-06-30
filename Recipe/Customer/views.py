@@ -7,6 +7,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from datetime import date
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate , login as auth_login , logout
 from django.contrib.auth.decorators import login_required
 
@@ -62,6 +63,7 @@ def home(request):
 
     return render(request, 'home.html')
 
+@login_required
 def customer_dashboard(request, id):
     userData = User.objects.get(id=id)
     profile = Profile.objects.filter(user=userData)
@@ -120,9 +122,6 @@ def customer_dashboard(request, id):
         context['verification_error'] = 'Please verify your account'
 
     return render(request, 'dashboard.html', context)
-
-
-
 
 def customer_order(request, cid, id):
     querySet = Recipe.objects.filter(id=id).first()

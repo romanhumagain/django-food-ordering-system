@@ -126,6 +126,7 @@
     {% endfor %}
   {% endif %}
   <div class="header"> <strong>User Details</strong></div>
+  
 <div class="container">
 <table class="table table-hover table-light table-striped shadow-lg">
   <thead>
@@ -138,25 +139,34 @@
     </tr>
   </thead>
   <tbody>
-    {% for data in querySet%}
+    {% for data in querySet %}
     <tr>
       <th scope="row">{{forloop.counter}}</th>
-      <td>{{data.username}}</td>
-      <td>{{data.email}}</td>
+      <td>{{data.user.username}}</td>
+      <td>{{data.user.email}}</td>
       <td>
         <!-- <a href="/recipe/mailmodal/{{data.id}}/"  class="btn btn-outline-primary"  data-bs-toggle="modal" data-bs-target="#mailModal">Send Email</a> -->
-        <a href=""  class="btn btn-outline-danger send-email-btn"  data-bs-toggle="modal" data-bs-target="#mailModal" data-email="{{ data.email }}">Send Email</a>
+        <a href=""  class="btn btn-outline-danger send-email-btn"  data-bs-toggle="modal" data-bs-target="#mailModal" data-email="{{ data.user.email }}">Send Email</a>
         
-        <a href="/recipe/userOrder/{{data.id}}/" class="btn btn-outline-primary">View Order Details</a>
+        <a href="/recipe/userOrder/{{data.user.id}}/" class="btn btn-outline-primary">View Order Details</a>
       </td>
       <td><span class="badge badge-dark notification-badge"
-        style="color: rgb(250, 247, 247); position: relative; top: 8px; background-color: rgb(214, 26, 26); width: 32px; height: 32px; display: flex;  justify-content: center; align-items: center; border-radius: 50%; ">9</span>
+        style="color: rgb(250, 247, 247); position: relative; top: 8px; background-color: rgb(214, 26, 26); width: 32px; height: 32px; display: flex;  justify-content: center; align-items: center; border-radius: 50%; ">{{data.order_count}}</span>
       <span class="sr-only">unread messages</span></td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 </div>
+
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<div class="alert alert-danger alert alert-dismissible">{{message}}</div>
+{% endif %}
+{% endfor %}
+{% endif %}
 
 <!-- Mail Modal -->
 <div class="modal fade" id="mailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="mailModal" aria-hidden="true">

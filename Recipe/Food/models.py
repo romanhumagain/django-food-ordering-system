@@ -10,6 +10,6 @@ class Recipe(models.Model):
   recipe_image = models.ImageField(upload_to='images')
   recipe_view_count = models.IntegerField(default=1)
   
-  def __str__(self) -> str:
+  def __str__(self) -> str:                   
     return self.recipe_name
   

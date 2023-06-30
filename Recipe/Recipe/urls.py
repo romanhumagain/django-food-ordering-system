@@ -23,12 +23,15 @@ from Food.views import *
 from Customer.views import *
 from Food import urls
 from Customer import urls
+from Try import views
 from django.contrib.auth import views as auth_views
-
+from ORM . views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Customer.urls')),
     path('recipe/',include('Food.urls')),
+    path('receipe/' ,views.receipe , name='receipe' ),
+    path('form/' , home , name='home')
     ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

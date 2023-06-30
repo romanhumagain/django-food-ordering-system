@@ -66,7 +66,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="loginLabel">Login Your Account</h1>
+        <div class="logo">
+          <span class="logo-text" style="color: black;">Food<span class="logo-highlight">Xpress</span></span>
+        </div>
+        <h1 class="modal-title fs-5" id="loginLabel" style="margin-left:40px ">Login Your Account</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
@@ -113,7 +116,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         
       </div>
     </div>
@@ -125,7 +128,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="signupLabel">Register Your Account</h1>
+        <div class="logo">
+          <span class="logo-text" style="color: black;">Food<span class="logo-highlight">Xpress</span></span>
+        </div>
+        <h1 class="modal-title fs-5" id="signupLabel" style="margin-left:30px">Register Your Account</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -180,14 +186,12 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         
       </div>
     </div>
   </div>
 </div>
-
-
   <body>
     {% if messages %} 
     {% for message in messages %}

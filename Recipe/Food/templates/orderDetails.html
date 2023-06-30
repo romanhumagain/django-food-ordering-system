@@ -159,15 +159,7 @@
         <td>{{order.order_status}}</td>
         <!-- <td>{{order.id}}</td> -->
         <td><a href="/recipe/approval/{{order.id}}/" class="btn btn-outline-primary" style="margin: 7px;">Approve</a>
-          <a href="/deleteOrder/{{order.id}}/" class="btn btn-outline-danger update-order-btn" style="margin-left: 3px;">Cancel</a>
-          
-          <div class="cart" style="margin-right: 7px;">
-            <i class="fa fa-shopping-cart cart-icon " style="font-size: 40px; left: 0px;"></i>
-          </div>
-          <span class="badge badge-dark notification-badge"
-            style="color: rgb(250, 247, 247); position: relative; top: -15px; right: 0px; background-color: rgb(7, 7, 7); width: 26px; height: 26px; display: flex;  justify-content: center; align-items: center; border-radius: 50%; margin-right: 45px;">{{order_count}}</span>
-          <span class="sr-only">unread messages</span>
-        </td>
+          <a href="/deleteOrder/{{order.id}}/" class="btn btn-outline-danger update-order-btn" style="margin-left: 3px;">Cancel</a></td>
 
         </tr>
         {% endfor %}

@@ -9,6 +9,7 @@ from Food.utils import *
 from Customer.models import *
 from django.conf import settings
 # Create your views here.
+
 # @login_required(login_url = '/login/')
 def recipe(request):
     if request.method == 'POST':
@@ -85,7 +86,8 @@ def logout_page(request):
     return redirect('/')
 
 def UserTable(request):
-    data = User.objects.all()
+    users = User.objects.all()
+    querySet =[]
     
     if request.method == 'POST':
         data = request.POST
@@ -116,9 +118,15 @@ def UserTable(request):
             return redirect('/recipe/table/')
                 
     if request.GET.get('search'):
-        data = data.filter(username__icontains =request.GET.get('search'))
-    
-    context = {'querySet':data}
+        users = users.filter(username__icontains =request.GET.get('search'))
+    if not users:
+        messages.error(request, 'No User Found !')    
+        return render(request , 'table.html' , {'querySet': querySet})
+    for user in users:
+        order_count = Order.objects.filter(user=user).count()
+        querySet.append({'user':user ,'order_count':order_count})
+        
+    context = {'querySet':querySet }
     
     return render(request, 'table.html' , context)
 
@@ -135,8 +143,6 @@ def user_order(request , uid):
     user = User.objects.get(id = uid)
     
     order = Order.objects.filter(user = user)
-    
-    
     
     search = request.GET.get('search')
     if search:
